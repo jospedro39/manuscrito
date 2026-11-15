@@ -275,6 +275,19 @@ function guarda(){ try{ localStorage.setItem("mpa",JSON.stringify(ST)); }catch(e
 function carrega(){ try{ const s=localStorage.getItem("mpa"); return s?JSON.parse(s):null; }catch(e){ return null; } }
 
 /* ---------- ecrãs ---------- */
+const SUBST=["Céticos","Sofistas","Estoicos","Cínicos","Epicuristas","Peripatéticos",
+ "Eleatas","Pitagóricos","Atomistas","Dialéticos","Racionalistas","Empiristas","Lógicos",
+ "Metafísicos","Idealistas","Materialistas","Nominalistas","Utilitaristas","Existencialistas",
+ "Naturalistas","Humanistas","Pensadores","Discípulos","Oradores","Geómetras","Astrónomos",
+ "Retóricos","Académicos","Megáricos","Aprendizes","Escribas","Copistas","Leitores",
+ "Observadores","Inquiridores","Refutadores","Argumentadores","Silogistas","Mestres","Aforistas"];
+const ADJ=["Teimosos","Distraídos","Insones","Implacáveis","Indecisos","Audazes","Serenos",
+ "Céleres","Sonolentos","Argutos","Risonhos","Pacientes","Impacientes","Metódicos","Caóticos",
+ "Silenciosos","Invictos","Resilientes","Curiosos","Inquietos","Obstinados","Perspicazes",
+ "Imbatíveis","Famintos","Destemidos","Rigorosos","Irónicos","Lendários","Incansáveis","Matinais"];
+const SEG_NOME = 30;
+function nomeDe(eq,k){ return "Os "+SUBST[(eq-1)%SUBST.length]+" "+ADJ[((k%ADJ.length)+ADJ.length)%ADJ.length]; }
+
 function entrada(){
   nav.hidden=true;
   app.innerHTML=
@@ -283,21 +296,48 @@ function entrada(){
    '<div class="card">'+
    '<div class="field"><label for="ano">Ano</label>'+
    '<select id="ano"><option value="10">10.º ano</option><option value="11">11.º ano</option></select></div>'+
-   '<div class="field"><label for="eq">Número da equipa, o que está na vossa mesa</label>'+
+   '<div class="field" style="margin-bottom:18px"><label for="eq">Número da equipa, o que está na vossa mesa</label>'+
    '<input id="eq" inputmode="numeric" maxlength="2" placeholder="7"></div>'+
-   '<div class="field" style="margin-bottom:18px"><label for="nm">Nome da equipa</label>'+
-   '<input id="nm" maxlength="26" placeholder="Os Eleatas"></div>'+
-   '<button class="btn primary" id="go">Começar</button>'+
-   '<p class="msg" id="m"></p></div>'+
-   '<p class="sub" style="margin:14px 2px 0;font-size:14px">Carreguem em Começar só quando o professor disser. O cronómetro arranca nesse momento.</p>';
+   '<button class="btn primary" id="go">Continuar</button>'+
+   '<p class="msg" id="m"></p></div>';
   document.getElementById("go").onclick=()=>{
     const eq=parseInt(document.getElementById("eq").value,10);
-    const nm=document.getElementById("nm").value.trim();
     const ano=parseInt(document.getElementById("ano").value,10);
     const m=document.getElementById("m");
     if(!(eq>=1&&eq<=63)){ m.className="msg bad"; m.textContent="O número da equipa tem de estar entre 1 e 63."; return; }
-    if(!nm){ m.className="msg bad"; m.textContent="Escrevam o nome da equipa."; return; }
-    ST={ano:ano,eq:eq,nm:nm,ini:Date.now(),pts:0,feitos:{},err:{},pistas:0,saidas:0,ult:"",fim:null};
+    escolheNome(ano,eq);
+  };
+}
+
+function escolheNome(ano,eq){
+  let k=Math.floor(Math.random()*ADJ.length);
+  const ate=Date.now()+SEG_NOME*1000;
+  nav.hidden=true;
+  app.innerHTML=
+   '<h1>O vosso nome</h1>'+
+   '<p class="sub">O nome é sorteado. Têm '+SEG_NOME+' segundos para trocar as vezes que quiserem; '+
+   'quando o tempo acabar, fica o que estiver no ecrã.</p>'+
+   '<div class="fim" style="padding:28px 20px"><span class="k">Equipa '+eq+' · '+ano+'.º ano</span>'+
+   '<p id="nomeq" style="font:700 clamp(24px,7vw,34px)/1.15 var(--f);letter-spacing:-.02em;margin:14px 0 0"></p></div>'+
+   '<div class="card" style="margin-top:12px">'+
+   '<button class="btn" id="outro">Gerar outro nome</button>'+
+   '<p class="msg" id="conta" style="text-align:center"></p>'+
+   '<button class="btn primary" id="vai" style="margin-top:6px">Começar</button></div>'+
+   '<p class="sub" style="margin:14px 2px 0;font-size:14px">Carreguem em Começar só quando o professor disser. O cronómetro arranca nesse momento.</p>';
+  const el=document.getElementById("nomeq"), bo=document.getElementById("outro"), cc=document.getElementById("conta");
+  const pinta=()=>{ el.textContent=nomeDe(eq,k); };
+  pinta();
+  bo.onclick=()=>{ let n=k; while(n===k) n=Math.floor(Math.random()*ADJ.length); k=n; pinta(); };
+  const t=setInterval(()=>{
+    const s=Math.max(0,Math.ceil((ate-Date.now())/1000));
+    if(s>0){ cc.className="msg"; cc.textContent=s+(s===1?" segundo":" segundos")+" para trocar"; }
+    else { clearInterval(t); bo.remove();
+      cc.className="msg ok"; cc.textContent="O nome está fixo."; }
+  },250);
+  document.getElementById("vai").onclick=()=>{
+    clearInterval(t);
+    ST={ano:ano,eq:eq,nm:nomeDe(eq,k),ini:Date.now(),pts:0,feitos:{},err:{},
+        pistas:0,saidas:0,ult:"",fim:null};
     guarda(); jogo(); envia(true,false);
   };
 }
