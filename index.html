@@ -334,11 +334,35 @@ function escolheNome(ano,eq){
     else { clearInterval(t); bo.remove();
       cc.className="msg ok"; cc.textContent="O nome está fixo."; }
   },250);
-  document.getElementById("vai").onclick=()=>{
+  const arranca2=()=>{
     clearInterval(t);
     ST={ano:ano,eq:eq,nm:nomeDe(eq,k),ini:Date.now(),pts:0,feitos:{},err:{},
         pistas:0,saidas:0,ult:"",fim:null};
     guarda(); jogo(); envia(true,false);
+  };
+  document.getElementById("vai").onclick=function(){
+    const vb=this;
+    if(!SYNC.url){ arranca2(); return; }
+    vb.disabled=true; vb.textContent="A verificar a mesa…";
+    const u=SYNC.url.replace(/\/+$/,"")+"/"+SYNC.sessao+"/"+ano+"/"+eq+".json";
+    const segue=()=>{ vb.disabled=false; vb.textContent="Começar"; arranca2(); };
+    fetch(u,{cache:"no-store"}).then(r=>r.ok?r.json():null).then(j=>{
+      if(j && j.ts && (Date.now()-j.ts)<5400000 && j.nm && j.nm!==nomeDe(eq,k)){
+        vb.disabled=false; vb.textContent="Começar";
+        const cx=document.createElement("div"); cx.className="card";
+        cx.style.borderColor="var(--red)";
+        cx.innerHTML='<p style="margin:0 0 8px"><b>Esperem.</b> A mesa '+eq+' já está a ser usada por outra equipa, '+
+          'a «'+esc(j.nm)+'».</p><p style="margin:0 0 14px;color:var(--fg2);font-size:15px">'+
+          'Confirmem o número que está na vossa mesa. Se começarem assim, as duas equipas misturam-se e perdem os pontos uma da outra. '+
+          'Em caso de dúvida, chamem o professor.</p>'+
+          '<button class="btn" id="corrige">Corrigir o número da mesa</button>'+
+          '<button class="btn quiet" id="forca" style="margin-top:4px">O número está certo, continuar</button>';
+        vb.parentNode.parentNode.insertBefore(cx,vb.parentNode.nextSibling);
+        cx.scrollIntoView({behavior:"smooth",block:"center"});
+        document.getElementById("corrige").onclick=()=>{ clearInterval(t); entrada(); };
+        document.getElementById("forca").onclick=()=>arranca2();
+      } else segue();
+    }).catch(segue);
   };
 }
 
