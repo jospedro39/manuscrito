@@ -1,0 +1,360 @@
+<title>Manuscrito — Professor</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<style>:root{
+  --bg:#FFFFFF; --nav:rgba(255,255,255,.82); --card:#FFFFFF; --card2:#FBFBFD;
+  --fill:#F5F5F7; --fill2:#FAFAFC;
+  --sep:rgba(0,0,0,.08); --line:rgba(0,0,0,.08);
+  --sombra:0 1px 2px rgba(0,0,0,.035), 0 8px 22px rgba(0,0,0,.04);
+  --fg:#1D1D1F; --fg2:#6E6E73; --fg3:#B0B0B6;
+  --blue:#0071E3; --green:#1D9E52; --red:#D7263D; --orange:#B8700C;
+  --fa:#0071E3; --fb:#7D4FD3; --fc:#0E8A8A; --fd:#B8700C;
+  --f:-apple-system,BlinkMacSystemFont,"SF Pro Text","Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+  --m:ui-monospace,"SF Mono",SFMono-Regular,Menlo,Consolas,monospace;
+  color-scheme:light;
+}
+html{color-scheme:light}
+
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0}
+html{scroll-padding-top:78px}
+body{background:var(--bg);color:var(--fg);font:400 17px/1.47 var(--f);
+  -webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
+.wrap{max-width:860px;margin:0 auto;
+  padding-left:max(16px,env(safe-area-inset-left,0px));
+  padding-right:max(16px,env(safe-area-inset-right,0px));
+  padding-bottom:calc(40px + env(safe-area-inset-bottom,0px))}
+
+/* barra superior */
+.nav{position:sticky;top:0;z-index:20;margin:0;padding:11px 16px 10px;
+  background:var(--bg);border-bottom:1px solid var(--sep)}
+@supports ((-webkit-backdrop-filter:blur(1px)) or (backdrop-filter:blur(1px))){
+  .nav{background:var(--nav);-webkit-backdrop-filter:saturate(180%) blur(20px);backdrop-filter:saturate(180%) blur(20px)} }
+.nav .t{font:600 17px/1.2 var(--f);letter-spacing:-.01em;text-align:center;margin:0}
+.nav .s{font:400 13px/1.2 var(--f);color:var(--fg2);text-align:center;margin:2px 0 0}
+.bar{position:absolute;left:0;bottom:0;height:2px;background:var(--blue);width:0;transition:width 1s linear;border-radius:0 2px 2px 0}
+.bar.urg{background:var(--red)}
+
+h1{font:700 34px/1.12 var(--f);letter-spacing:-.022em;margin:24px 0 6px;text-wrap:balance}
+.sub{color:var(--fg2);font-size:15px;margin:0 0 20px;max-width:62ch}
+.hdr{font:600 13px/1 var(--f);letter-spacing:.01em;color:var(--fg2);margin:26px 4px 7px}
+
+/* superfícies */
+.card{background:var(--card);border:1px solid var(--line);box-shadow:var(--sombra);
+  border-radius:16px;padding:18px;margin-bottom:12px}
+.field{margin-bottom:14px}
+.field label{display:block;font:600 13px/1 var(--f);color:var(--fg2);margin:0 0 6px 2px}
+input,select,textarea{appearance:none;-webkit-appearance:none;width:100%;background:var(--fill);
+  border:1px solid transparent;border-radius:10px;color:var(--fg);font:400 17px/1.3 var(--f);
+  padding:13px 14px;font-family:var(--f)}
+input:focus,select:focus,textarea:focus{background:#fff;border-color:var(--blue);outline:none}
+textarea{font-family:var(--m);font-size:16px;letter-spacing:.06em;resize:vertical;line-height:1.7}
+select{background-image:none}
+input::placeholder,textarea::placeholder{color:var(--fg3)}
+:focus-visible{outline:3px solid rgba(0,113,227,.35);outline-offset:1px}
+
+.btn{appearance:none;border:1px solid transparent;width:100%;background:var(--fill);color:var(--blue);
+  font:600 17px/1 var(--f);padding:15px 18px;border-radius:12px;cursor:pointer;
+  transition:transform .12s ease,background .12s ease,opacity .12s ease}
+.btn:hover{background:#EDEDF0}
+.btn:active{transform:scale(.975);opacity:.8}
+.btn.primary{background:var(--blue);color:#fff}
+.btn.primary:hover{background:#0063C8}
+.btn.quiet{background:transparent;padding:13px 0}
+.btn.quiet:hover{background:transparent;text-decoration:underline}
+.btn[disabled]{opacity:.4;cursor:default;transform:none}
+.row{display:flex;gap:10px;flex-wrap:wrap}
+.row .btn{width:auto;flex:1 1 130px}
+
+/* estatísticas */
+.hud{display:flex;background:var(--card);border:1px solid var(--line);border-radius:16px;
+  overflow:hidden;margin:16px 0 14px}
+.hud div{flex:1 1 0;min-width:0;padding:12px 8px;text-align:center;border-left:1px solid var(--sep)}
+.hud div:first-child{border-left:0}
+.hud>div>span{display:block;font:500 11px/1 var(--f);color:var(--fg2);margin-bottom:5px;
+  overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.hud b{display:block;font:600 19px/1.1 var(--m);font-variant-numeric:tabular-nums;letter-spacing:-.02em;white-space:nowrap}
+.hud.urgente b#rel{color:var(--red)}
+
+/* famílias */
+.fams{display:flex;gap:7px;flex-wrap:nowrap;overflow-x:auto;margin:0 -16px 14px;padding:0 16px 2px;
+  scrollbar-width:none;-ms-overflow-style:none}
+.fams::-webkit-scrollbar{display:none}
+.fam{flex:0 0 auto;border-radius:99px;padding:6px 13px;font:600 13px/1 var(--f);
+  color:var(--fg2);background:var(--card);border:1px solid var(--line)}
+.fam.on{background:var(--green);color:#fff;border-color:transparent}
+
+/* grelha de cartões */
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(165px,1fr));gap:12px}
+.cb{text-align:left;background:var(--card);border:1px solid var(--line);box-shadow:var(--sombra);
+  border-radius:18px;padding:15px;cursor:pointer;
+  color:var(--fg);font-family:var(--f);display:flex;flex-direction:column;gap:7px;min-width:0;
+  transition:transform .12s ease,box-shadow .12s ease,opacity .12s ease}
+.cb:hover{box-shadow:0 2px 4px rgba(0,0,0,.05), 0 12px 28px rgba(0,0,0,.07)}
+.cb:active{transform:scale(.97)}
+.cb .f{font:600 12px/1 var(--f);letter-spacing:.02em;color:var(--fam)}
+.cb h4{font:600 16px/1.25 var(--f);letter-spacing:-.01em;margin:0;flex:1}
+.cb .meta{display:flex;justify-content:space-between;align-items:center;gap:8px}
+.dots{display:flex;gap:3px}
+.dots i{width:5px;height:5px;border-radius:99px;background:var(--fam);display:block}
+.pts{font:600 13px/1 var(--m);font-variant-numeric:tabular-nums;color:var(--fg2)}
+.cb.done{opacity:.5;box-shadow:none}
+.cb.done .pts{color:var(--green)}
+
+/* painel do cartão */
+.panel{background:var(--card);border:1px solid var(--line);box-shadow:var(--sombra);
+  border-radius:18px;padding:20px;margin-top:14px}
+.panel .k{font:600 12px/1 var(--f);letter-spacing:.02em}
+.panel h3{font:700 22px/1.2 var(--f);letter-spacing:-.018em;margin:7px 0 2px}
+.panel .who{font-size:13px;color:var(--fg2);margin:0 0 14px}
+.panel p{margin:0 0 12px;font-size:16px}
+.panel ol{margin:0 0 14px;padding-left:0;list-style:none;counter-reset:n}
+.panel li{counter-increment:n;position:relative;padding:10px 0 10px 32px;font-size:16px;
+  border-top:1px solid var(--sep)}
+.panel li:first-child{border-top:0;padding-top:2px}
+.panel li::before{content:counter(n);position:absolute;left:0;top:10px;width:22px;height:22px;
+  border-radius:99px;background:var(--fill);color:var(--fg2);font:600 12px/22px var(--m);text-align:center}
+.panel li:first-child::before{top:2px}
+.fml{display:block;font:600 21px/1.4 var(--m);color:var(--fg);background:var(--fill);
+  border:1px solid var(--line);border-radius:12px;padding:16px;margin:4px 0 16px;
+  word-break:break-word;text-align:center}
+.quote{color:var(--fg2);border-left:3px solid var(--sep);padding-left:12px}
+.ansrow{display:flex;gap:10px;align-items:stretch}
+.ansrow input{flex:0 0 86px;font:600 20px/1 var(--m);text-align:center;padding:14px 6px}
+.ansrow .btn{flex:1 1 auto;width:auto}
+.msg{margin:12px 0 0;font-size:15px;min-height:1.2em}
+.msg.ok{color:var(--green)} .msg.bad{color:var(--red)} .msg.warn{color:var(--orange)}
+
+/* fim */
+.fim{background:var(--card);border:1px solid var(--line);box-shadow:var(--sombra);
+  border-radius:20px;padding:32px 20px;text-align:center;margin-top:18px}
+.fim .k{font:600 13px/1 var(--f);color:var(--fg2)}
+.codigo{font:700 clamp(30px,10vw,44px)/1.1 var(--m);letter-spacing:.14em;margin:16px 0 10px;
+  word-break:break-all;color:var(--blue)}
+
+/* tabela */
+.tbl{background:var(--card);border:1px solid var(--line);border-radius:16px;overflow:hidden;margin-top:12px}
+table{border-collapse:collapse;width:100%;font-size:15px}
+th,td{text-align:left;padding:12px;border-top:1px solid var(--sep)}
+thead th{border-top:0;font:600 12px/1 var(--f);color:var(--fg2);letter-spacing:.02em;background:var(--fill2)}
+td.num{font-family:var(--m);font-variant-numeric:tabular-nums}
+tr.podio td{background:var(--fill2)}
+.pos{display:inline-block;min-width:24px;height:24px;border-radius:99px;background:var(--fill);
+  font:600 12px/24px var(--m);text-align:center;padding:0 6px}
+tr.podio .pos{background:var(--blue);color:#fff}
+footer{margin-top:34px;padding-top:16px;border-top:1px solid var(--sep);color:var(--fg3);font-size:13px}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+
+.segs{display:flex;background:var(--fill);border-radius:10px;padding:2px;margin:18px 0 4px}
+.segs button{flex:1;appearance:none;border:0;background:transparent;color:var(--fg);
+  font:600 15px/1 var(--f);padding:9px 10px;border-radius:8px;cursor:pointer}
+.segs button.on{background:var(--card);border:1px solid var(--line);box-shadow:0 1px 2px rgba(0,0,0,.06)}
+.tiles{display:grid;grid-template-columns:repeat(auto-fill,minmax(168px,1fr));gap:10px;margin-top:14px}
+.tile{background:var(--card);border:1px solid var(--line);box-shadow:var(--sombra);
+  border-radius:16px;padding:13px 14px;border-left:4px solid var(--line)}
+.tile.fora{border-left-color:var(--red)}
+.tile.mudo{opacity:.5;box-shadow:none}
+.tile.acabou{border-left-color:var(--green)}
+.tile .n{display:flex;justify-content:space-between;align-items:baseline;gap:8px}
+.tile .eq{font:600 15px/1.25 var(--f);letter-spacing:-.01em;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.tile .p{font:700 20px/1 var(--m);font-variant-numeric:tabular-nums}
+.tile .d{font:400 12px/1.45 var(--f);color:var(--fg2);margin-top:4px;
+  overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.tile .d+.d{margin-top:1px}
+.tile .av{font:600 12px/1 var(--f);color:var(--red);margin-top:6px}
+.tile .ok{font:600 12px/1 var(--f);color:var(--green);margin-top:6px}
+.est{display:flex;gap:8px;align-items:center;font:400 14px/1 var(--f);color:var(--fg2);margin:12px 2px 0}
+.ponto{width:8px;height:8px;border-radius:99px;background:var(--fg3);flex:0 0 auto}
+.ponto.viva{background:var(--green)} .ponto.morta{background:var(--red)}
+.proj{position:fixed;inset:0;z-index:90;background:var(--bg);overflow:auto;padding:4vh 4vw}
+.proj h2{font:700 clamp(28px,4.4vw,56px)/1.1 var(--f);letter-spacing:-.025em;margin:0 0 3vh}
+.proj table{font-size:clamp(17px,2.3vw,30px)}
+.proj th,.proj td{padding:clamp(8px,1.3vh,20px) clamp(10px,1.4vw,22px)}
+.proj .pos{min-width:clamp(30px,3.4vw,46px);height:clamp(30px,3.4vw,46px);
+  line-height:clamp(30px,3.4vw,46px);font-size:clamp(14px,1.7vw,24px)}
+.proj .sair{position:fixed;top:14px;right:14px;width:auto;padding:10px 18px;z-index:91}
+.ouro .pos{background:#D4A017!important;color:#fff}
+.prata .pos{background:#9AA0A6!important;color:#fff}
+.bronze .pos{background:#B06A2C!important;color:#fff}
+</style>
+
+<div class="nav">
+  <p class="t">Manuscrito Perdido · Professor</p>
+  <p class="s" id="navs">Painel ao vivo e ranking</p>
+</div>
+<div class="wrap">
+  <div id="app"></div>
+  <footer>Página do professor. Não partilhar com os alunos.</footer>
+</div>
+
+<script>
+/* ====== SINCRONIZAÇÃO (tem de ser igual à da página dos alunos) ====== */
+const SYNC = { url: "https://manuscrito-cid-default-rtdb.europe-west1.firebasedatabase.app", sessao: "dmf2026" };
+const ANO_VER = 10;   /* o ano que estás a ver no painel: 10 ou 11 */
+
+const SAL = "cjd-manuscrito-2026";
+const ALFA = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
+const esc=s=>String(s).replace(/[&<>]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;"}[c]));
+const pl=(n,um,muitos)=>n+" "+(n===1?um:muitos);
+
+function hash10(n){let h=2166136261>>>0;const s=String(n)+SAL;
+  for(let i=0;i<s.length;i++){h^=s.charCodeAt(i);h=Math.imul(h,16777619)>>>0;}return h%1024;}
+function leCodigo(cod){
+  cod=(cod||"").toUpperCase().replace(/[^A-Z2-9]/g,"");
+  if(cod.length!==7) return null;
+  let v=0; for(const ch of cod){ const i=ALFA.indexOf(ch); if(i<0) return null; v=v*32+i; }
+  const carga=Math.floor(v/1024), chk=v%1024;
+  if(hash10(carga)!==chk) return null;
+  const a=carga%2, r1=Math.floor(carga/2);
+  const mi=r1%64, r2=Math.floor(r1/64);
+  const c=r2%17, r3=Math.floor(r2/17);
+  const p=r3%89, eq=Math.floor(r3/89);
+  if(eq<1||eq>63) return null;
+  return {ano:a?11:10, eq:eq, pts:p*5, cart:c, mins:mi};
+}
+
+const app=document.getElementById("app");
+let aba="vivo";
+
+app.innerHTML=
+ '<h1>Painel</h1>'+
+ '<div class="segs"><button id="tv" class="on">Ao vivo</button><button id="tc">Códigos</button></div>'+
+ '<div id="pane"></div>';
+document.getElementById("tv").onclick=()=>troca("vivo");
+document.getElementById("tc").onclick=()=>troca("cod");
+function troca(a){ aba=a;
+  document.getElementById("tv").classList.toggle("on",a==="vivo");
+  document.getElementById("tc").classList.toggle("on",a==="cod");
+  a==="vivo"?painel():codigos(); }
+
+/* ======================= AO VIVO ======================= */
+let sond=null, vivo={}, ultOk=0, falhas=0;
+
+function painel(){
+
+  if(!SYNC.url){
+    document.getElementById("pane").innerHTML=
+      '<div class="card" style="margin-top:14px"><p style="margin:0 0 10px"><b>Painel ao vivo desligado.</b></p>'+
+      '<p style="margin:0;color:var(--fg2);font-size:15px">Falta o endereço da base de dados na linha <code>SYNC.url</code>, no topo desta página e da página dos alunos. Enquanto estiver vazio, tudo o resto funciona — usa o separador Códigos no fim do jogo.</p></div>';
+    return;
+  }
+  document.getElementById("pane").innerHTML=
+    '<p class="sub" style="margin:14px 0 0">Atualiza sozinho de 4 em 4 segundos. Cada equipa aparece assim que carregar em Começar.</p>'+
+    '<div class="est"><span class="ponto" id="luz"></span><span id="estado">a ligar…</span></div>'+
+    '<div class="tiles" id="tiles"></div>'+
+    '<div class="row" style="margin-top:16px"><button class="btn" id="proj2">Projetar ranking</button></div>';
+  document.getElementById("proj2").onclick=()=>projeta(deVivo());
+  if(sond) clearInterval(sond);
+  sonda(); sond=setInterval(sonda,4000);
+}
+
+function sonda(){
+  const u=SYNC.url.replace(/\/+$/,"")+"/"+SYNC.sessao+"/"+ANO_VER+".json";
+  fetch(u,{cache:"no-store"}).then(r=>r.ok?r.json():Promise.reject(r.status))
+    .then(j=>{ vivo=j||{}; ultOk=Date.now(); falhas=0; pinta(); })
+    .catch(()=>{ falhas++; pinta(); });
+}
+
+function deVivo(){
+  return Object.keys(vivo).map(k=>{
+    const v=vivo[k]||{};
+    return {eq:parseInt(k,10),nome:v.nm||"",pts:v.pts||0,cart:v.cart||0,
+            pistas:v.pistas||0,saidas:v.saidas||0,fora:!!v.fora,ult:v.ult||"",
+            fim:v.fim||null,ts:v.ts||0,ano:ANO_VER,mins:0};
+  }).sort((a,b)=> b.pts-a.pts || b.cart-a.cart || a.eq-b.eq);
+}
+
+function pinta(){
+  const t=document.getElementById("tiles"); if(!t) return;
+  const luz=document.getElementById("luz"), est=document.getElementById("estado");
+  const eqs=deVivo(), agora=Date.now();
+  if(falhas>0){ luz.className="ponto morta";
+    est.textContent="sem ligação à base de dados ("+falhas+" tentativas falhadas) — o jogo nos telemóveis não é afetado"; }
+  else { luz.className="ponto viva";
+    const act=eqs.filter(e=>agora-e.ts<45000).length;
+    const acab=eqs.filter(e=>e.fim).length;
+    const tot=eqs.reduce((s,e)=>s+e.cart,0);
+    est.textContent=eqs.length+" equipas · "+act+" ativas · "+acab+" terminaram · "+tot+" cartões resolvidos"; }
+  if(!eqs.length){ t.innerHTML='<p class="sub" style="grid-column:1/-1">Ainda não entrou nenhuma equipa.</p>'; return; }
+  t.innerHTML=eqs.map(e=>{
+    const mudo=agora-e.ts>45000;
+    const cls="tile"+(e.fim?" acabou":"")+(e.fora&&!e.fim?" fora":"")+(mudo&&!e.fim?" mudo":"");
+    let pe="";
+    if(e.fim) pe='<div class="ok">terminou · '+esc(e.fim)+'</div>';
+    else if(e.fora) pe='<div class="av">saiu da app agora</div>';
+    else if(mudo) pe='<div class="d">sem sinal há '+Math.round((agora-e.ts)/1000)+' s</div>';
+    return '<div class="'+cls+'"><div class="n"><span class="eq">'+(e.nome?esc(e.nome):"Equipa "+e.eq)+
+      '</span><span class="p">'+e.pts+'</span></div>'+
+      '<div class="d">mesa '+e.eq+' · '+e.cart+'/16 cartões</div>'+
+      '<div class="d">'+pl(e.pistas,"pista","pistas")+' · '+pl(e.saidas,"saída","saídas")+'</div>'+
+      (e.ult?'<div class="d">'+esc(e.ult)+'</div>':'')+pe+'</div>';
+  }).join("");
+}
+
+/* ======================= CÓDIGOS ======================= */
+let temp=null;
+function codigos(){
+  if(sond) clearInterval(sond), sond=null;
+  document.getElementById("pane").innerHTML=
+   '<p class="sub" style="margin:14px 0 16px">Um código por linha. Se quiseres o nome da equipa no ranking projetado, escreve-o a seguir ao código, na mesma linha.</p>'+
+   '<div class="card"><div class="field"><label for="cods">Códigos</label>'+
+   '<textarea id="cods" rows="9" placeholder="K7M2QPV Os Eleatas&#10;B4XTR9A Caverna FC&#10;…"></textarea></div>'+
+   '<button class="btn primary" id="calc">Calcular ranking</button>'+
+   '<div class="row" style="margin-top:10px">'+
+   '<button class="btn" id="proj">Projetar</button>'+
+   '<button class="btn" id="lim">Limpar</button></div></div><div id="res"></div>';
+  const ta=document.getElementById("cods");
+  try{ ta.value=localStorage.getItem("mpa_prof")||""; }catch(e){}
+  document.getElementById("calc").onclick=()=>{
+    try{ localStorage.setItem("mpa_prof",ta.value); }catch(e){}
+    const {bons,maus}=lê(ta);
+    let h='';
+    if(!bons.length) h='<p class="msg bad">Nenhum código válido ainda.</p>';
+    else h=tabela(bons,false)+'<p class="sub" style="margin:12px 2px 0;font-size:14px">'+bons.length+
+      ' equipas registadas. Desempate: menos minutos, depois mais cartões resolvidos.</p>';
+    if(maus.length) h+='<p class="msg bad" style="margin-top:12px">Não descodificam: <b>'+
+      maus.map(esc).join("</b>, <b>")+'</b>. Confirma as letras — o alfabeto não tem I, O, zero nem um.</p>';
+    document.getElementById("res").innerHTML=h;
+  };
+  document.getElementById("lim").onclick=()=>{ ta.value="";
+    try{ localStorage.setItem("mpa_prof",""); }catch(e){}
+    document.getElementById("res").innerHTML=""; };
+  document.getElementById("proj").onclick=()=>{ const {bons}=lê(ta);
+    if(!bons.length){ document.getElementById("res").innerHTML='<p class="msg bad">Não há códigos para projetar.</p>'; return; }
+    projeta(bons); };
+}
+function lê(ta){
+  const linhas=ta.value.split(/\r?\n/).map(l=>l.trim()).filter(Boolean);
+  const bons=[],maus=[];
+  linhas.forEach(l=>{ const partes=l.split(/\s+/); const d=leCodigo(partes[0]);
+    if(d){ d.cod=partes[0].toUpperCase(); d.nome=partes.slice(1).join(" "); bons.push(d); }
+    else maus.push(l); });
+  bons.sort((a,b)=> b.pts-a.pts || a.mins-b.mins || b.cart-a.cart);
+  return {bons:bons,maus:maus};
+}
+
+/* ======================= comum ======================= */
+function tabela(bons,grande){
+  const medalha=["ouro","prata","bronze"];
+  let h='<div class="tbl"><table><thead><tr><th></th><th>Equipa</th><th>Pontos</th>'+
+        (grande?'':'<th>Cartões</th><th>Min.</th><th>Ano</th>')+'</tr></thead><tbody>';
+  bons.forEach((d,i)=>{
+    const cls=(i<3?' class="podio '+medalha[i]+'"':'');
+    h+='<tr'+cls+'><td><span class="pos">'+(i+1)+'</span></td>'+
+       '<td>'+(d.nome?esc(d.nome)+' <span style="color:var(--fg2)">· '+d.eq+'</span>':'Equipa '+d.eq)+'</td>'+
+       '<td class="num"><b>'+d.pts+'</b></td>'+
+       (grande?'':'<td class="num">'+d.cart+'/16</td><td class="num">'+(d.mins||0)+'</td><td class="num">'+d.ano+'.º</td>')+
+       '</tr>';
+  });
+  return h+'</tbody></table></div>';
+}
+function projeta(bons){
+  const d=document.createElement("div"); d.className="proj";
+  d.innerHTML='<button class="btn sair" id="sair">Fechar</button>'+
+    '<h2>O Manuscrito Perdido da Academia</h2>'+tabela(bons.slice(0,10),true);
+  document.body.appendChild(d);
+  document.getElementById("sair").onclick=()=>d.remove();
+  document.addEventListener("keydown",function k(e){ if(e.key==="Escape"){ d.remove(); document.removeEventListener("keydown",k); } });
+}
+
+painel();
+</script>

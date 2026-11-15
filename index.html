@@ -1,0 +1,461 @@
+<title>Manuscrito Perdido</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<style>:root{
+  --bg:#FFFFFF; --nav:rgba(255,255,255,.82); --card:#FFFFFF; --card2:#FBFBFD;
+  --fill:#F5F5F7; --fill2:#FAFAFC;
+  --sep:rgba(0,0,0,.08); --line:rgba(0,0,0,.08);
+  --sombra:0 1px 2px rgba(0,0,0,.035), 0 8px 22px rgba(0,0,0,.04);
+  --fg:#1D1D1F; --fg2:#6E6E73; --fg3:#B0B0B6;
+  --blue:#0071E3; --green:#1D9E52; --red:#D7263D; --orange:#B8700C;
+  --fa:#0071E3; --fb:#7D4FD3; --fc:#0E8A8A; --fd:#B8700C;
+  --f:-apple-system,BlinkMacSystemFont,"SF Pro Text","Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+  --m:ui-monospace,"SF Mono",SFMono-Regular,Menlo,Consolas,monospace;
+  color-scheme:light;
+}
+html{color-scheme:light}
+
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0}
+html{scroll-padding-top:78px}
+body{background:var(--bg);color:var(--fg);font:400 17px/1.47 var(--f);
+  -webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
+.wrap{max-width:860px;margin:0 auto;
+  padding-left:max(16px,env(safe-area-inset-left,0px));
+  padding-right:max(16px,env(safe-area-inset-right,0px));
+  padding-bottom:calc(40px + env(safe-area-inset-bottom,0px))}
+
+/* barra superior */
+.nav{position:sticky;top:0;z-index:20;margin:0;padding:11px 16px 10px;
+  background:var(--bg);border-bottom:1px solid var(--sep)}
+@supports ((-webkit-backdrop-filter:blur(1px)) or (backdrop-filter:blur(1px))){
+  .nav{background:var(--nav);-webkit-backdrop-filter:saturate(180%) blur(20px);backdrop-filter:saturate(180%) blur(20px)} }
+.nav .t{font:600 17px/1.2 var(--f);letter-spacing:-.01em;text-align:center;margin:0}
+.nav .s{font:400 13px/1.2 var(--f);color:var(--fg2);text-align:center;margin:2px 0 0}
+.bar{position:absolute;left:0;bottom:0;height:2px;background:var(--blue);width:0;transition:width 1s linear;border-radius:0 2px 2px 0}
+.bar.urg{background:var(--red)}
+
+h1{font:700 34px/1.12 var(--f);letter-spacing:-.022em;margin:24px 0 6px;text-wrap:balance}
+.sub{color:var(--fg2);font-size:15px;margin:0 0 20px;max-width:62ch}
+.hdr{font:600 13px/1 var(--f);letter-spacing:.01em;color:var(--fg2);margin:26px 4px 7px}
+
+/* superfícies */
+.card{background:var(--card);border:1px solid var(--line);box-shadow:var(--sombra);
+  border-radius:16px;padding:18px;margin-bottom:12px}
+.field{margin-bottom:14px}
+.field label{display:block;font:600 13px/1 var(--f);color:var(--fg2);margin:0 0 6px 2px}
+input,select,textarea{appearance:none;-webkit-appearance:none;width:100%;background:var(--fill);
+  border:1px solid transparent;border-radius:10px;color:var(--fg);font:400 17px/1.3 var(--f);
+  padding:13px 14px;font-family:var(--f)}
+input:focus,select:focus,textarea:focus{background:#fff;border-color:var(--blue);outline:none}
+textarea{font-family:var(--m);font-size:16px;letter-spacing:.06em;resize:vertical;line-height:1.7}
+select{background-image:none}
+input::placeholder,textarea::placeholder{color:var(--fg3)}
+:focus-visible{outline:3px solid rgba(0,113,227,.35);outline-offset:1px}
+
+.btn{appearance:none;border:1px solid transparent;width:100%;background:var(--fill);color:var(--blue);
+  font:600 17px/1 var(--f);padding:15px 18px;border-radius:12px;cursor:pointer;
+  transition:transform .12s ease,background .12s ease,opacity .12s ease}
+.btn:hover{background:#EDEDF0}
+.btn:active{transform:scale(.975);opacity:.8}
+.btn.primary{background:var(--blue);color:#fff}
+.btn.primary:hover{background:#0063C8}
+.btn.quiet{background:transparent;padding:13px 0}
+.btn.quiet:hover{background:transparent;text-decoration:underline}
+.btn[disabled]{opacity:.4;cursor:default;transform:none}
+.row{display:flex;gap:10px;flex-wrap:wrap}
+.row .btn{width:auto;flex:1 1 130px}
+
+/* estatísticas */
+.hud{display:flex;background:var(--card);border:1px solid var(--line);border-radius:16px;
+  overflow:hidden;margin:16px 0 14px}
+.hud div{flex:1 1 0;min-width:0;padding:12px 8px;text-align:center;border-left:1px solid var(--sep)}
+.hud div:first-child{border-left:0}
+.hud>div>span{display:block;font:500 11px/1 var(--f);color:var(--fg2);margin-bottom:5px;
+  overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.hud b{display:block;font:600 19px/1.1 var(--m);font-variant-numeric:tabular-nums;letter-spacing:-.02em;white-space:nowrap}
+.hud.urgente b#rel{color:var(--red)}
+
+/* famílias */
+.fams{display:flex;gap:7px;flex-wrap:nowrap;overflow-x:auto;margin:0 -16px 14px;padding:0 16px 2px;
+  scrollbar-width:none;-ms-overflow-style:none}
+.fams::-webkit-scrollbar{display:none}
+.fam{flex:0 0 auto;border-radius:99px;padding:6px 13px;font:600 13px/1 var(--f);
+  color:var(--fg2);background:var(--card);border:1px solid var(--line)}
+.fam.on{background:var(--green);color:#fff;border-color:transparent}
+
+/* grelha de cartões */
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(165px,1fr));gap:12px}
+.cb{text-align:left;background:var(--card);border:1px solid var(--line);box-shadow:var(--sombra);
+  border-radius:18px;padding:15px;cursor:pointer;
+  color:var(--fg);font-family:var(--f);display:flex;flex-direction:column;gap:7px;min-width:0;
+  transition:transform .12s ease,box-shadow .12s ease,opacity .12s ease}
+.cb:hover{box-shadow:0 2px 4px rgba(0,0,0,.05), 0 12px 28px rgba(0,0,0,.07)}
+.cb:active{transform:scale(.97)}
+.cb .f{font:600 12px/1 var(--f);letter-spacing:.02em;color:var(--fam)}
+.cb h4{font:600 16px/1.25 var(--f);letter-spacing:-.01em;margin:0;flex:1}
+.cb .meta{display:flex;justify-content:space-between;align-items:center;gap:8px}
+.dots{display:flex;gap:3px}
+.dots i{width:5px;height:5px;border-radius:99px;background:var(--fam);display:block}
+.pts{font:600 13px/1 var(--m);font-variant-numeric:tabular-nums;color:var(--fg2)}
+.cb.done{opacity:.5;box-shadow:none}
+.cb.done .pts{color:var(--green)}
+
+/* painel do cartão */
+.panel{background:var(--card);border:1px solid var(--line);box-shadow:var(--sombra);
+  border-radius:18px;padding:20px;margin-top:14px}
+.panel .k{font:600 12px/1 var(--f);letter-spacing:.02em}
+.panel h3{font:700 22px/1.2 var(--f);letter-spacing:-.018em;margin:7px 0 2px}
+.panel .who{font-size:13px;color:var(--fg2);margin:0 0 14px}
+.panel p{margin:0 0 12px;font-size:16px}
+.panel ol{margin:0 0 14px;padding-left:0;list-style:none;counter-reset:n}
+.panel li{counter-increment:n;position:relative;padding:10px 0 10px 32px;font-size:16px;
+  border-top:1px solid var(--sep)}
+.panel li:first-child{border-top:0;padding-top:2px}
+.panel li::before{content:counter(n);position:absolute;left:0;top:10px;width:22px;height:22px;
+  border-radius:99px;background:var(--fill);color:var(--fg2);font:600 12px/22px var(--m);text-align:center}
+.panel li:first-child::before{top:2px}
+.fml{display:block;font:600 21px/1.4 var(--m);color:var(--fg);background:var(--fill);
+  border:1px solid var(--line);border-radius:12px;padding:16px;margin:4px 0 16px;
+  word-break:break-word;text-align:center}
+.quote{color:var(--fg2);border-left:3px solid var(--sep);padding-left:12px}
+.ansrow{display:flex;gap:10px;align-items:stretch}
+.ansrow input{flex:0 0 86px;font:600 20px/1 var(--m);text-align:center;padding:14px 6px}
+.ansrow .btn{flex:1 1 auto;width:auto}
+.msg{margin:12px 0 0;font-size:15px;min-height:1.2em}
+.msg.ok{color:var(--green)} .msg.bad{color:var(--red)} .msg.warn{color:var(--orange)}
+
+/* fim */
+.fim{background:var(--card);border:1px solid var(--line);box-shadow:var(--sombra);
+  border-radius:20px;padding:32px 20px;text-align:center;margin-top:18px}
+.fim .k{font:600 13px/1 var(--f);color:var(--fg2)}
+.codigo{font:700 clamp(30px,10vw,44px)/1.1 var(--m);letter-spacing:.14em;margin:16px 0 10px;
+  word-break:break-all;color:var(--blue)}
+
+/* tabela */
+.tbl{background:var(--card);border:1px solid var(--line);border-radius:16px;overflow:hidden;margin-top:12px}
+table{border-collapse:collapse;width:100%;font-size:15px}
+th,td{text-align:left;padding:12px;border-top:1px solid var(--sep)}
+thead th{border-top:0;font:600 12px/1 var(--f);color:var(--fg2);letter-spacing:.02em;background:var(--fill2)}
+td.num{font-family:var(--m);font-variant-numeric:tabular-nums}
+tr.podio td{background:var(--fill2)}
+.pos{display:inline-block;min-width:24px;height:24px;border-radius:99px;background:var(--fill);
+  font:600 12px/24px var(--m);text-align:center;padding:0 6px}
+tr.podio .pos{background:var(--blue);color:#fff}
+footer{margin-top:34px;padding-top:16px;border-top:1px solid var(--sep);color:var(--fg3);font-size:13px}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+
+<div class="nav" id="nav" hidden>
+  <p class="t" id="navt">O Manuscrito Perdido</p>
+  <p class="s" id="navs"></p>
+  <div class="bar" id="bar"></div>
+</div>
+<div class="wrap">
+  <div id="app"></div>
+  <footer>O Manuscrito Perdido da Academia · Dia Mundial da Filosofia · Colégio Júlio Dinis</footer>
+</div>
+
+<script>
+const DADOS = {"a10":{"ano":10,"enun":[["O Tejo atravessa Lisboa.",1],["Fecha a janela, se fazes favor.",0],["Será que a alma é imortal?",0],["Nenhum número primo é par.",1],["Que belo argumento!",0],["Oxalá o teste corra bem.",0],["Platão foi discípulo de Sócrates.",1],["Pensa pela tua própria cabeça.",0],["A Lua é feita de queijo.",1],["Traz-me o livro amanhã.",0],["Todos os quadrados têm quatro lados.",1],["Quem escreveu a República?",0],["Está um frio de rachar!",0],["Sócrates nasceu em Atenas.",1],["Não faças aos outros o que não queres que te façam.",0],["Existem números primos maiores do que mil.",1],["A água ferve a 100 °C ao nível do mar.",1],["Que horas são?",0],["Oxalá nunca mais chova.",0],["Lisboa fica a norte do Porto.",1],["Senta-te e ouve com atenção.",0],["O número sete é ímpar.",1],["Espero que venhas amanhã.",0],["Aristóteles foi aluno de Platão.",1],["Como é que isso aconteceu?!",0],["Nenhum ser humano vive mil anos.",1],["Cala-te!",0],["Há vida noutros planetas.",1],["Quem me dera perceber filosofia.",0],["Todos os cães são mamíferos.",1]],"args":[["Todos os gregos são humanos. Sócrates é grego. Logo, Sócrates é humano.",1],["Todos os gatos são mamíferos. Todos os cães são mamíferos. Logo, todos os gatos são cães.",0],["Se há filosofia, há perguntas. Há perguntas. Logo, há filosofia.",0],["Se Platão fundou a Academia, existiu uma escola. Platão fundou a Academia. Logo, existiu uma escola.",1],["Se Platão foi grego, foi humano. Platão foi humano. Logo, Platão foi grego.",0],["Nenhum peixe é mamífero. A baleia é mamífera. Logo, a baleia não é peixe.",1],["Alguns filósofos são gregos. Alguns gregos são marinheiros. Logo, alguns filósofos são marinheiros.",0],["Se chove, a rua molha-se. Não choveu. Logo, a rua não se molhou.",0],["Todos os homens são mortais. Sócrates é mortal. Logo, Sócrates é homem.",0],["Se estudas, aprendes. Não aprendeste. Logo, não estudaste.",1],["Ou o réu é culpado, ou é inocente. Não é culpado. Logo, é inocente.",1],["Todos os quadrados são retângulos. Todos os retângulos são paralelogramos. Logo, todos os quadrados são paralelogramos.",1],["Se o Sol se apagasse, ficaria escuro. Está escuro. Logo, o Sol apagou-se.",0],["Nenhum filósofo é infalível. Sócrates é filósofo. Logo, Sócrates não é infalível.",1],["Alguns animais são aves. Todas as aves põem ovos. Logo, alguns animais põem ovos.",1],["Se a Rita estuda, passa. A Rita passou. Logo, a Rita estudou.",0],["Todos os atenienses são gregos. Nenhum grego é egípcio. Logo, nenhum ateniense é egípcio.",1],["Se não há provas, o réu é absolvido. Há provas. Logo, o réu não é absolvido.",0],["Todos os mamíferos têm pulmões. A baleia é mamífera. Logo, a baleia tem pulmões.",1],["Alguns gregos são filósofos. Sócrates é grego. Logo, Sócrates é filósofo.",0]],"formas":[["P → Q ; P ; ∴ Q",1],["P → Q ; ¬Q ; ∴ ¬P",1],["P → Q ; Q ; ∴ P",0],["P → Q ; ¬P ; ∴ ¬Q",0],["P ∨ Q ; ¬P ; ∴ Q",1],["P ∨ Q ; P ; ∴ ¬Q",0],["P ⊻ Q ; P ; ∴ ¬Q",1],["P → Q ; Q → R ; ∴ P → R",1],["P ∧ Q ; ∴ P",1],["P ; ∴ P ∨ Q",1],["¬(P ∧ Q) ; ¬P ; ∴ Q",0],["P ↔ Q ; ¬P ; ∴ ¬Q",1],["P → Q ; ∴ Q → P",0],["P ∨ Q ; ¬Q ; ∴ P",1]],"categ":[["Qualquer promessa deve ser cumprida.","A"],["Há políticos que não são honestos.","O"],["Não existe nenhum triângulo com quatro lados.","E"],["Certos filmes são obras de arte.","I"],["Nem todos os metais são sólidos.","O"],["Todo o esforço é recompensado.","A"],["Alguns desportos não são olímpicos.","O"],["Nenhum quadrado é redondo.","E"],["Todas as aves põem ovos.","A"],["Algumas estrelas são maiores do que o Sol.","I"],["Nem todas as aves voam.","O"],["Nenhum número primo é divisível por quatro.","E"],["Há filósofos que são gregos.","I"],["Todo o ser humano é mortal.","A"],["Não há nenhum mamífero que ponha ovos.","E"],["Alguns livros não são interessantes.","O"],["Qualquer triângulo tem três lados.","A"],["Existem planetas sem atmosfera.","I"],["Nenhuma pedra é um ser vivo.","E"],["Nem todos os gregos foram filósofos.","O"]],"fmls":[["(P ∨ Q) → R",5],["(P ∧ Q) → ¬R",7],["¬P → (Q ∧ R)",5],["(P → Q) ∧ (Q → R)",4],["P ↔ (Q ∨ R)",4],["(P ⊻ Q) → R",6],["¬(P ∧ Q) ∨ R",7],["(P → Q) → R",5],["P ∧ (Q ∨ ¬R)",3],["(P ∨ Q) ↔ (P ∧ Q)",4],["¬(P → Q) ∨ R",5],["(P ∧ ¬Q) → R",7]],"pares":[["¬(P ∧ Q)","¬P ∨ ¬Q",1],["P → Q","¬P ∨ Q",1],["¬(P → Q)","¬P → ¬Q",0],["P ↔ Q","(P → Q) ∧ (Q → P)",1],["¬(P ∨ Q)","¬P ∧ ¬Q",1],["P → Q","Q → P",0],["P ⊻ Q","¬(P ↔ Q)",1],["¬(P ∧ Q)","¬P ∧ ¬Q",0]],"supr":[["O lince ibérico está em perigo de extinção, uma vez que restam menos de mil indivíduos em estado selvagem.",["O lince ibérico é uma espécie protegida por lei.","Todas as espécies de que restam menos de mil indivíduos em estado selvagem estão em perigo de extinção.","Restam poucos linces ibéricos.","O lince ibérico vive na Península Ibérica."],2],["Este quadro é uma obra de arte, pois foi criado com intenção estética.",["O autor do quadro é famoso.","Tudo o que é criado com intenção estética é uma obra de arte.","As obras de arte estão nos museus.","O quadro é bonito."],2],["O Pedro vai chumbar, porque faltou a metade das aulas.",["O Pedro não gosta da disciplina.","Faltar às aulas é proibido.","Quem falta a metade das aulas chumba.","As aulas são importantes."],3],["O pinheiro é uma planta de folha perene, uma vez que mantém a folhagem durante todo o ano.",["Os pinheiros são árvores.","O pinheiro cresce em Portugal.","As folhas do pinheiro são agulhas.","Todas as plantas que mantêm a folhagem durante todo o ano são de folha perene."],4],["A Rita não é de confiança, pois chega atrasada com frequência.",["Quem chega atrasado com frequência não é de confiança.","A Rita tem muito trabalho.","Chegar atrasado é falta de educação.","A Rita mora longe."],1],["Este argumento é inválido, porque tem premissas verdadeiras e conclusão falsa.",["Os argumentos inválidos são maus argumentos.","As premissas deste argumento são verdadeiras.","Nenhum argumento válido tem premissas verdadeiras e conclusão falsa.","A conclusão deste argumento é falsa."],3]],"c1":[{"frases":["O manuscrito não está na caixa vermelha.","O manuscrito não está aqui.","O manuscrito está na caixa vermelha.","O manuscrito está aqui."],"sol":2},{"frases":["O manuscrito não está na caixa verde.","O manuscrito não está aqui.","O manuscrito não está na caixa verde.","O manuscrito está na caixa azul."],"sol":4},{"frases":["O manuscrito não está aqui.","O manuscrito não está aqui.","O manuscrito está na caixa vermelha.","O manuscrito está aqui."],"sol":1},{"frases":["O manuscrito não está aqui.","O manuscrito está aqui.","O manuscrito não está na caixa vermelha.","O manuscrito está aqui."],"sol":1},{"frases":["O manuscrito não está na caixa verde.","O manuscrito não está na caixa amarela.","O manuscrito não está na caixa verde.","O manuscrito não está aqui."],"sol":4},{"frases":["O manuscrito não está aqui.","O manuscrito está na caixa amarela.","O manuscrito está na caixa azul.","O manuscrito não está aqui."],"sol":4}],"c2":[{"pistas":["O Sócrates estuda a lógica.","O Aristóteles tem a ânfora.","O filósofo da sala 4 estuda as Ideias.","O Tales estuda a virtude.","O Platão está na sala 3.","A lamparina está imediatamente à direita do compasso.","O Sócrates tem o rolo de papiro."],"solF":[1,0,2,3],"solO":[1,3,2,0],"solT":[3,1,0,2],"n":7},{"pistas":["O Sócrates está ao lado do Aristóteles.","A lamparina está imediatamente à direita da ânfora.","O Sócrates tem o compasso.","O Tales estuda a virtude.","O filósofo da sala 1 estuda a água.","O Platão estuda a lógica.","O Platão tem o rolo de papiro."],"solF":[1,3,0,2],"solO":[3,0,2,1],"solT":[0,2,1,3],"n":7},{"pistas":["O compasso está imediatamente à direita da ânfora.","O Aristóteles tem a ânfora.","O Sócrates tem o rolo de papiro.","O Tales estuda as Ideias.","O Sócrates estuda a água.","A lamparina está imediatamente à direita do compasso.","O filósofo da sala 4 estuda a lógica."],"solF":[1,3,0,2],"solO":[1,0,3,2],"solT":[0,1,2,3],"n":7},{"pistas":["A lamparina está imediatamente à direita do compasso.","O Sócrates está na sala 3.","O filósofo da sala 3 estuda a virtude.","O Sócrates tem a ânfora.","O Tales estuda as Ideias.","O Platão está na sala 4.","O filósofo da sala 1 estuda a lógica."],"solF":[3,0,1,2],"solO":[3,2,0,1],"solT":[3,2,1,0],"n":7},{"pistas":["O compasso está imediatamente à direita da lamparina.","O filósofo da sala 3 estuda a lógica.","O Platão tem a lamparina.","O Tales estuda a água.","O Sócrates está ao lado do Tales.","O filósofo da sala 4 estuda as Ideias.","A ânfora está imediatamente à direita do compasso."],"solF":[2,0,1,3],"solO":[2,3,0,1],"solT":[1,0,3,2],"n":7},{"pistas":["O Platão tem a lamparina.","O Sócrates está na sala 1.","O filósofo da sala 4 estuda as Ideias.","O Tales estuda a lógica.","O Aristóteles estuda a água.","A ânfora está imediatamente à direita do compasso.","O Aristóteles tem o compasso."],"solF":[1,3,0,2],"solO":[1,3,0,2],"solT":[1,0,3,2],"n":7}],"c2m":{"FIL":["Tales","Sócrates","Platão","Aristóteles"],"OBJ":["ânfora","rolo de papiro","lamparina","compasso"],"TEM":["a água","a virtude","as Ideias","a lógica"]},"c3":[{"frases":["O manuscrito não está aqui.","O manuscrito está na caixa amarela.","O manuscrito está aqui.","O manuscrito não está na caixa vermelha."],"sol":4},{"frases":["O manuscrito não está aqui.","O manuscrito não está na caixa verde.","O manuscrito não está na caixa azul.","O manuscrito está na caixa vermelha."],"sol":4},{"frases":["O manuscrito não está na caixa verde.","O manuscrito está na caixa amarela.","O manuscrito está na caixa azul.","O manuscrito não está aqui."],"sol":2},{"frases":["O manuscrito está na caixa vermelha.","O manuscrito está na caixa amarela.","O manuscrito está na caixa verde.","O manuscrito está aqui."],"sol":4},{"frases":["O manuscrito está na caixa vermelha.","O manuscrito não está na caixa verde.","O manuscrito está aqui.","O manuscrito não está aqui."],"sol":1},{"frases":["O manuscrito não está na caixa amarela.","O manuscrito está na caixa verde.","O manuscrito não está aqui.","O manuscrito está na caixa azul."],"sol":2}],"c4":[{"pistas":["O filósofo da sala 2 estuda o número.","O Platão está algures à esquerda do Aristóteles.","O Platão estuda as Ideias.","O Aristóteles estuda a água.","O filósofo da sala 3 estuda a virtude.","O Pitágoras está ao lado do Tales.","A ânfora está na sala 5.","O compasso está na sala 4.","O rolo de papiro está imediatamente à direita da lamparina.","O Tales tem o rolo de papiro.","O Sócrates estuda a virtude."],"solF":[1,0,2,3,4],"solO":[2,1,4,3,0],"solT":[4,1,2,3,0],"n":11},{"pistas":["O Pitágoras está ao lado do Sócrates.","O Pitágoras está ao lado do Aristóteles.","O Sócrates estuda a água.","O Pitágoras tem a lamparina.","O rolo de papiro está na sala 3.","O Tales estuda as Ideias.","O filósofo da sala 4 estuda a lógica.","O Aristóteles estuda a virtude.","O Aristóteles tem a clepsidra.","O compasso está na sala 1.","O Platão está ao lado do Sócrates."],"solF":[0,3,2,1,4],"solO":[3,0,1,2,4],"solT":[3,1,0,4,2],"n":11},{"pistas":["O compasso está imediatamente à direita da lamparina.","A ânfora está na sala 1.","O Platão estuda a lógica.","O filósofo da sala 5 estuda a lógica.","O Sócrates estuda o número.","O Tales estuda a água.","O Aristóteles tem o compasso.","O Tales está na sala 1.","O rolo de papiro está na sala 2.","O filósofo da sala 3 estuda as Ideias."],"solF":[0,2,1,4,3],"solO":[0,1,2,3,4],"solT":[0,1,3,2,4],"n":10},{"pistas":["O filósofo da sala 2 estuda o número.","O Aristóteles tem a lamparina.","O compasso está na sala 4.","O Tales tem o rolo de papiro.","O Sócrates estuda a água.","O Platão está na sala 3.","A clepsidra está na sala 2.","O filósofo da sala 5 estuda as Ideias.","O Aristóteles estuda a lógica."],"solF":[4,1,3,2,0],"solO":[2,4,0,3,1],"solT":[4,1,2,0,3],"n":9},{"pistas":["O Sócrates está ao lado do Tales.","O compasso está na sala 3.","O Sócrates tem a lamparina.","O Platão estuda a virtude.","O filósofo da sala 5 estuda o número.","O Aristóteles está algures à esquerda do Pitágoras.","O Pitágoras está algures à esquerda do Platão.","A ânfora está imediatamente à direita da clepsidra.","O Tales estuda as Ideias.","O Aristóteles estuda a água."],"solF":[4,1,3,0,2],"solO":[4,0,3,1,2],"solT":[0,4,2,3,1],"n":10},{"pistas":["O Aristóteles tem o rolo de papiro.","O Platão está ao lado do Sócrates.","O Tales está ao lado do Sócrates.","O compasso está imediatamente à direita do rolo de papiro.","O filósofo da sala 5 estuda a virtude.","O Aristóteles estuda a lógica.","O filósofo da sala 3 estuda o número.","O Aristóteles está ao lado do Tales.","O Sócrates estuda as Ideias.","O rolo de papiro está imediatamente à direita da lamparina.","A lamparina está imediatamente à direita da ânfora."],"solF":[3,2,0,4,1],"solO":[4,0,2,1,3],"solT":[0,3,1,4,2],"n":11}],"c4m":{"FIL":["Tales","Pitágoras","Sócrates","Platão","Aristóteles"],"OBJ":["ânfora","rolo de papiro","lamparina","compasso","clepsidra"],"TEM":["a água","o número","a virtude","as Ideias","a lógica"]},"d":[{"cod":"D1","pts":10,"t":"O barco de Teseu","esc":"Substituíram, uma a uma, todas as tábuas do barco de Teseu. Com as tábuas velhas construíram um segundo barco. Qual dos dois é o barco de Teseu? Escrevam a vossa posição e a razão na folha de trabalho.","q":"Depois de escreverem: porque é que esta pergunta é difícil?","ops":["Porque não sabemos quantas tábuas foram trocadas.","Porque o barco já não navega.","Porque «ser o mesmo» tanto pode significar ter a mesma matéria como ter a mesma forma e história — e os dois critérios dão respostas diferentes.","Porque Teseu já tinha morrido."],"resp":3},{"cod":"D2","pts":20,"t":"O mentiroso","esc":"«Esta frase é falsa.» É verdadeira ou falsa? Escrevam na folha por que razão nenhuma das duas respostas funciona.","q":"Depois de escreverem: qual é a razão?","ops":["Se for verdadeira então é falsa, e se for falsa então é verdadeira.","Porque a frase não diz nada.","Porque está mal construída.","Porque uma frase não pode falar de si própria."],"resp":1},{"cod":"D3","pts":30,"t":"O monte de areia","esc":"Um grão de areia não é um monte. Juntar um grão a algo que não é um monte nunca faz dele um monte. Logo, nenhuma quantidade de areia é um monte. O argumento é válido, mas a conclusão é falsa. Escrevam na folha onde está o erro.","q":"Depois de escreverem: o que é que se segue daí?","ops":["Que a lógica não funciona nos casos difíceis.","Que o argumento afinal não é válido.","Que a conclusão afinal é verdadeira.","Que pelo menos uma premissa é falsa — e é a segunda, porque «monte» não tem fronteira precisa."],"resp":4},{"cod":"D4","pts":50,"t":"A caverna","esc":"Podiam os prisioneiros descobrir sozinhos que estavam enganados? Escrevam na folha o que lhes faltava.","q":"Depois de escreverem: o que é que lhes faltava?","ops":["Mais tempo a observar as sombras com atenção.","Um termo de comparação vindo de fora da caverna — e alguém que os obrigasse a sair.","Inteligência suficiente para perceber.","Uma linguagem melhor para descrever o que viam."],"resp":2}]},"a11":{"ano":11,"enun":[["O Tejo atravessa Lisboa.",1],["Fecha a janela, se fazes favor.",0],["Será que a alma é imortal?",0],["Nenhum número primo é par.",1],["Que belo argumento!",0],["Oxalá o teste corra bem.",0],["Platão foi discípulo de Sócrates.",1],["Pensa pela tua própria cabeça.",0],["A Lua é feita de queijo.",1],["Traz-me o livro amanhã.",0],["Todos os quadrados têm quatro lados.",1],["Quem escreveu a República?",0],["Está um frio de rachar!",0],["Sócrates nasceu em Atenas.",1],["Não faças aos outros o que não queres que te façam.",0],["Existem números primos maiores do que mil.",1],["A água ferve a 100 °C ao nível do mar.",1],["Que horas são?",0],["Oxalá nunca mais chova.",0],["Lisboa fica a norte do Porto.",1],["Senta-te e ouve com atenção.",0],["O número sete é ímpar.",1],["Espero que venhas amanhã.",0],["Aristóteles foi aluno de Platão.",1],["Como é que isso aconteceu?!",0],["Nenhum ser humano vive mil anos.",1],["Cala-te!",0],["Há vida noutros planetas.",1],["Quem me dera perceber filosofia.",0],["Todos os cães são mamíferos.",1]],"args":[["Todos os gregos são humanos. Sócrates é grego. Logo, Sócrates é humano.",1],["Todos os gatos são mamíferos. Todos os cães são mamíferos. Logo, todos os gatos são cães.",0],["Se há filosofia, há perguntas. Há perguntas. Logo, há filosofia.",0],["Se Platão fundou a Academia, existiu uma escola. Platão fundou a Academia. Logo, existiu uma escola.",1],["Se Platão foi grego, foi humano. Platão foi humano. Logo, Platão foi grego.",0],["Nenhum peixe é mamífero. A baleia é mamífera. Logo, a baleia não é peixe.",1],["Alguns filósofos são gregos. Alguns gregos são marinheiros. Logo, alguns filósofos são marinheiros.",0],["Se chove, a rua molha-se. Não choveu. Logo, a rua não se molhou.",0],["Todos os homens são mortais. Sócrates é mortal. Logo, Sócrates é homem.",0],["Se estudas, aprendes. Não aprendeste. Logo, não estudaste.",1],["Ou o réu é culpado, ou é inocente. Não é culpado. Logo, é inocente.",1],["Todos os quadrados são retângulos. Todos os retângulos são paralelogramos. Logo, todos os quadrados são paralelogramos.",1],["Se o Sol se apagasse, ficaria escuro. Está escuro. Logo, o Sol apagou-se.",0],["Nenhum filósofo é infalível. Sócrates é filósofo. Logo, Sócrates não é infalível.",1],["Alguns animais são aves. Todas as aves põem ovos. Logo, alguns animais põem ovos.",1],["Se a Rita estuda, passa. A Rita passou. Logo, a Rita estudou.",0],["Todos os atenienses são gregos. Nenhum grego é egípcio. Logo, nenhum ateniense é egípcio.",1],["Se não há provas, o réu é absolvido. Há provas. Logo, o réu não é absolvido.",0],["Todos os mamíferos têm pulmões. A baleia é mamífera. Logo, a baleia tem pulmões.",1],["Alguns gregos são filósofos. Sócrates é grego. Logo, Sócrates é filósofo.",0],["Se Deus existe, o mal não existe. O mal existe. Logo, Deus não existe.",1],["Todos os que sonham podem enganar-se. Descartes sonhava às vezes. Logo, Descartes podia enganar-se.",1],["Se os sentidos me enganam às vezes, nunca devo confiar neles. Os sentidos enganam-me às vezes. Logo, nunca devo confiar neles.",1],["Nenhuma ideia inata vem da experiência. Algumas ideias vêm da experiência. Logo, algumas ideias não são inatas.",1],["Se penso, existo. Existo. Logo, penso.",0],["Todos os filósofos duvidam. Alguns que duvidam enganam-se. Logo, alguns filósofos enganam-se.",0],["Ou a alma é mortal, ou é imortal. A alma não é mortal. Logo, é imortal.",1],["Se sonho, não distingo o sonho da vigília. Não distingo o sonho da vigília. Logo, sonho.",0],["Nenhum corpo pensa. Eu penso. Logo, eu não sou um corpo.",1],["Todas as verdades matemáticas são certas. Algumas certezas são enganadoras. Logo, algumas verdades matemáticas são enganadoras.",0]],"formas":[["P → Q ; P ; ∴ Q",1],["P → Q ; ¬Q ; ∴ ¬P",1],["P → Q ; Q ; ∴ P",0],["P → Q ; ¬P ; ∴ ¬Q",0],["P ∨ Q ; ¬P ; ∴ Q",1],["P ∨ Q ; P ; ∴ ¬Q",0],["P ⊻ Q ; P ; ∴ ¬Q",1],["P → Q ; Q → R ; ∴ P → R",1],["P ∧ Q ; ∴ P",1],["P ; ∴ P ∨ Q",1],["¬(P ∧ Q) ; ¬P ; ∴ Q",0],["P ↔ Q ; ¬P ; ∴ ¬Q",1],["P → Q ; ∴ Q → P",0],["P ∨ Q ; ¬Q ; ∴ P",1]],"categ":[["Qualquer promessa deve ser cumprida.","A"],["Há políticos que não são honestos.","O"],["Não existe nenhum triângulo com quatro lados.","E"],["Certos filmes são obras de arte.","I"],["Nem todos os metais são sólidos.","O"],["Todo o esforço é recompensado.","A"],["Alguns desportos não são olímpicos.","O"],["Nenhum quadrado é redondo.","E"],["Todas as aves põem ovos.","A"],["Algumas estrelas são maiores do que o Sol.","I"],["Nem todas as aves voam.","O"],["Nenhum número primo é divisível por quatro.","E"],["Há filósofos que são gregos.","I"],["Todo o ser humano é mortal.","A"],["Não há nenhum mamífero que ponha ovos.","E"],["Alguns livros não são interessantes.","O"],["Qualquer triângulo tem três lados.","A"],["Existem planetas sem atmosfera.","I"],["Nenhuma pedra é um ser vivo.","E"],["Nem todos os gregos foram filósofos.","O"]],"fmls":[["(P ∨ Q) → R",5],["(P ∧ Q) → ¬R",7],["¬P → (Q ∧ R)",5],["(P → Q) ∧ (Q → R)",4],["P ↔ (Q ∨ R)",4],["(P ⊻ Q) → R",6],["¬(P ∧ Q) ∨ R",7],["(P → Q) → R",5],["P ∧ (Q ∨ ¬R)",3],["(P ∨ Q) ↔ (P ∧ Q)",4],["¬(P → Q) ∨ R",5],["(P ∧ ¬Q) → R",7],["((P ∨ Q) ∧ ¬R) → ¬(P ∧ Q)",7],["(P → (Q → R)) ∧ (P ∧ Q)",1],["¬((P ∧ Q) ∨ (¬P ∧ R))",4],["(P ↔ Q) → (Q ↔ R)",6],["((P ⊻ Q) ∧ R) ∨ (¬P ∧ ¬Q)",4],["(P → Q) ↔ (¬Q → ¬P)",8]],"pares":[["¬(P ∧ Q)","¬P ∨ ¬Q",1],["P → Q","¬P ∨ Q",1],["¬(P → Q)","¬P → ¬Q",0],["P ↔ Q","(P → Q) ∧ (Q → P)",1],["¬(P ∨ Q)","¬P ∧ ¬Q",1],["P → Q","Q → P",0],["P ⊻ Q","¬(P ↔ Q)",1],["¬(P ∧ Q)","¬P ∧ ¬Q",0],["P → (Q → R)","(P ∧ Q) → R",1],["¬(P ⊻ Q)","P ↔ Q",1],["(P ∨ Q) → R","(P → R) ∧ (Q → R)",1],["P → (Q ∨ R)","(P → Q) ∨ (P → R)",1],["¬(P → Q)","¬P → Q",0],["P ∧ (Q ∨ R)","(P ∧ Q) ∨ R",0]],"supr":[["O lince ibérico está em perigo de extinção, uma vez que restam menos de mil indivíduos em estado selvagem.",["O lince ibérico é uma espécie protegida por lei.","Todas as espécies de que restam menos de mil indivíduos em estado selvagem estão em perigo de extinção.","Restam poucos linces ibéricos.","O lince ibérico vive na Península Ibérica."],2],["Este quadro é uma obra de arte, pois foi criado com intenção estética.",["O autor do quadro é famoso.","Tudo o que é criado com intenção estética é uma obra de arte.","As obras de arte estão nos museus.","O quadro é bonito."],2],["O Pedro vai chumbar, porque faltou a metade das aulas.",["O Pedro não gosta da disciplina.","Faltar às aulas é proibido.","Quem falta a metade das aulas chumba.","As aulas são importantes."],3],["O pinheiro é uma planta de folha perene, uma vez que mantém a folhagem durante todo o ano.",["Os pinheiros são árvores.","O pinheiro cresce em Portugal.","As folhas do pinheiro são agulhas.","Todas as plantas que mantêm a folhagem durante todo o ano são de folha perene."],4],["A Rita não é de confiança, pois chega atrasada com frequência.",["Quem chega atrasado com frequência não é de confiança.","A Rita tem muito trabalho.","Chegar atrasado é falta de educação.","A Rita mora longe."],1],["Este argumento é inválido, porque tem premissas verdadeiras e conclusão falsa.",["Os argumentos inválidos são maus argumentos.","As premissas deste argumento são verdadeiras.","Nenhum argumento válido tem premissas verdadeiras e conclusão falsa.","A conclusão deste argumento é falsa."],3]],"c1":[{"frases":["O manuscrito está aqui.","O manuscrito está aqui.","O manuscrito não está na caixa azul.","O manuscrito não está na caixa amarela."],"sol":3},{"frases":["O manuscrito está na caixa vermelha.","O manuscrito não está na caixa verde.","O manuscrito não está na caixa azul.","O manuscrito não está na caixa azul."],"sol":1},{"frases":["O manuscrito está aqui.","O manuscrito está aqui.","O manuscrito não está aqui.","O manuscrito não está na caixa azul."],"sol":3},{"frases":["O manuscrito está na caixa vermelha.","O manuscrito está na caixa amarela.","O manuscrito está na caixa vermelha.","O manuscrito não está na caixa azul."],"sol":4},{"frases":["O manuscrito está na caixa vermelha.","O manuscrito está aqui.","O manuscrito não está aqui.","O manuscrito está aqui."],"sol":1},{"frases":["O manuscrito está aqui.","O manuscrito não está aqui.","O manuscrito não está na caixa verde.","O manuscrito está na caixa vermelha."],"sol":4}],"c2":[{"pistas":["O Sócrates está na sala 1.","O Aristóteles tem o compasso.","O Aristóteles estuda as Ideias.","O filósofo da sala 4 estuda a lógica.","A ânfora está na sala 4.","O Platão tem a lamparina.","O filósofo da sala 3 estuda a virtude."],"solF":[1,3,2,0],"solO":[1,3,2,0],"solT":[0,2,1,3],"n":7},{"pistas":["O Tales estuda a virtude.","O filósofo da sala 3 estuda a lógica.","O Sócrates tem a ânfora.","O filósofo da sala 1 estuda as Ideias.","O Sócrates está na sala 2.","O Aristóteles tem a lamparina.","O rolo de papiro está imediatamente à direita da ânfora."],"solF":[3,1,2,0],"solO":[2,0,1,3],"solT":[2,0,3,1],"n":7},{"pistas":["A ânfora está imediatamente à direita da lamparina.","O Sócrates está ao lado do Aristóteles.","O rolo de papiro está na sala 2.","O filósofo da sala 4 estuda a lógica.","O Tales está ao lado do Sócrates.","O Platão estuda a água.","O Tales estuda as Ideias."],"solF":[2,0,1,3],"solO":[3,1,2,0],"solT":[0,2,1,3],"n":7},{"pistas":["O Aristóteles tem a lamparina.","O filósofo da sala 4 estuda a lógica.","O filósofo da sala 3 estuda a virtude.","O Tales estuda a água.","O Aristóteles está ao lado do Sócrates.","A ânfora está imediatamente à direita do compasso.","O Sócrates estuda as Ideias."],"solF":[0,1,3,2],"solO":[3,0,2,1],"solT":[0,2,1,3],"n":7},{"pistas":["O rolo de papiro está na sala 3.","A lamparina está imediatamente à direita do rolo de papiro.","O Tales estuda as Ideias.","O Tales tem a ânfora.","O Aristóteles tem o rolo de papiro.","O Sócrates estuda a água.","O filósofo da sala 1 estuda a lógica."],"solF":[2,0,3,1],"solO":[3,0,1,2],"solT":[3,2,1,0],"n":7},{"pistas":["O filósofo da sala 3 estuda a virtude.","O filósofo da sala 4 estuda a lógica.","O Sócrates está na sala 1.","O rolo de papiro está na sala 3.","A lamparina está imediatamente à direita da ânfora.","O Platão está na sala 3.","O Aristóteles estuda a água."],"solF":[1,3,2,0],"solO":[0,2,1,3],"solT":[2,0,1,3],"n":7}],"c2m":{"FIL":["Tales","Sócrates","Platão","Aristóteles"],"OBJ":["ânfora","rolo de papiro","lamparina","compasso"],"TEM":["a água","a virtude","as Ideias","a lógica"]},"c3":[{"frases":["O manuscrito está na caixa vermelha.","O manuscrito está na caixa amarela.","O manuscrito não está na caixa verde.","O manuscrito não está aqui."],"sol":1},{"frases":["O manuscrito está aqui.","O manuscrito não está na caixa amarela.","O manuscrito está na caixa vermelha.","O manuscrito está na caixa azul."],"sol":2},{"frases":["O manuscrito não está aqui.","O manuscrito está aqui.","O manuscrito não está na caixa verde.","O manuscrito está na caixa vermelha."],"sol":3},{"frases":["O manuscrito não está na caixa vermelha.","O manuscrito não está na caixa amarela.","O manuscrito não está aqui.","O manuscrito está aqui."],"sol":2},{"frases":["O manuscrito não está na caixa verde.","O manuscrito está na caixa azul.","O manuscrito não está aqui.","O manuscrito não está na caixa amarela."],"sol":4},{"frases":["O manuscrito não está aqui.","O manuscrito está na caixa amarela.","O manuscrito não está na caixa verde.","O manuscrito não está na caixa azul."],"sol":4}],"c4":[{"pistas":["O Platão está ao lado do Sócrates.","O compasso está imediatamente à direita da lamparina.","A clepsidra está na sala 5.","O Pitágoras tem a ânfora.","O filósofo da sala 5 estuda a água.","O Pitágoras estuda a virtude.","O filósofo da sala 2 estuda o número.","O Platão está na sala 5.","A lamparina está imediatamente à direita da ânfora.","O Aristóteles estuda as Ideias."],"solF":[1,0,4,2,3],"solO":[0,2,3,1,4],"solT":[2,1,3,4,0],"n":10},{"pistas":["O Aristóteles está algures à esquerda do Sócrates.","O filósofo da sala 3 estuda o número.","O Sócrates estuda a lógica.","A ânfora está na sala 3.","O compasso está imediatamente à direita da lamparina.","O Pitágoras está algures à esquerda do Tales.","O Aristóteles estuda a virtude.","O filósofo da sala 4 estuda as Ideias.","O Aristóteles está ao lado do Tales.","O Sócrates tem o rolo de papiro."],"solF":[1,4,0,3,2],"solO":[2,3,0,4,1],"solT":[0,2,1,3,4],"n":10},{"pistas":["O Pitágoras está na sala 4.","O Sócrates está ao lado do Tales.","O filósofo da sala 4 estuda as Ideias.","O rolo de papiro está na sala 4.","A ânfora está imediatamente à direita da lamparina.","O Aristóteles está na sala 5.","O filósofo da sala 3 estuda a virtude.","O Sócrates tem a lamparina.","O filósofo da sala 1 estuda a lógica.","O filósofo da sala 5 estuda a água.","O compasso está imediatamente à direita da ânfora."],"solF":[2,0,3,1,4],"solO":[2,0,3,1,4],"solT":[4,1,2,3,0],"n":11},{"pistas":["O filósofo da sala 2 estuda a água.","O filósofo da sala 3 estuda a lógica.","O Tales está algures à esquerda do Aristóteles.","O Pitágoras tem o compasso.","A ânfora está imediatamente à direita do rolo de papiro.","A ânfora está na sala 3.","O Pitágoras estuda a virtude.","O Aristóteles está algures à esquerda do Platão.","O filósofo da sala 5 estuda o número.","O Platão está algures à esquerda do Sócrates.","A lamparina está imediatamente à direita da clepsidra."],"solF":[1,0,4,3,2],"solO":[3,1,0,4,2],"solT":[2,0,4,3,1],"n":11},{"pistas":["O filósofo da sala 1 estuda as Ideias.","O Platão tem o compasso.","O Pitágoras está na sala 4.","O Aristóteles está ao lado do Tales.","O Tales tem a ânfora.","O Sócrates tem o rolo de papiro.","O Aristóteles estuda a lógica.","O Pitágoras estuda a virtude.","O Platão estuda a água.","O Tales está ao lado do Sócrates.","O Pitágoras tem a clepsidra."],"solF":[2,0,4,1,3],"solO":[1,0,2,4,3],"solT":[3,1,4,2,0],"n":11},{"pistas":["O Tales está na sala 3.","O Pitágoras está algures à esquerda do Aristóteles.","O filósofo da sala 3 estuda as Ideias.","O Platão tem a clepsidra.","O filósofo da sala 2 estuda a lógica.","O Sócrates está algures à esquerda do Platão.","O Platão está algures à esquerda do Tales.","O filósofo da sala 5 estuda a virtude.","A ânfora está imediatamente à direita da lamparina.","O compasso está na sala 3.","O filósofo da sala 1 estuda o número."],"solF":[2,3,0,1,4],"solO":[1,4,3,2,0],"solT":[1,4,3,0,2],"n":11}],"c4m":{"FIL":["Tales","Pitágoras","Sócrates","Platão","Aristóteles"],"OBJ":["ânfora","rolo de papiro","lamparina","compasso","clepsidra"],"TEM":["a água","o número","a virtude","as Ideias","a lógica"]},"d":[{"cod":"D1","pts":10,"t":"A dúvida dos sentidos","esc":"Os sentidos enganam-nos algumas vezes. Será isso razão suficiente para nunca mais confiarmos neles? Escrevam a vossa posição na folha de trabalho.","q":"Depois de escreverem: qual é o passo de Descartes?","ops":["Tratar a mera possibilidade de erro como bastante para suspender a confiança.","Provar que os sentidos nos enganam sempre.","Mostrar que os sentidos são inúteis.","Substituir os sentidos pela imaginação."],"resp":1},{"cod":"D2","pts":20,"t":"O argumento do sonho","esc":"Como podem saber, neste preciso momento, que não estão a sonhar? Escrevam na folha por que razão o argumento é difícil de refutar.","q":"Depois de escreverem: porque é que é difícil?","ops":["Porque os sonhos são sempre confusos e a vigília não.","Porque nunca nos lembramos dos sonhos.","Porque qualquer critério que se invoque pode ele próprio fazer parte do sonho.","Porque é impossível sonhar com filosofia."],"resp":3},{"cod":"D3","pts":30,"t":"O génio maligno","esc":"Que diferença faz supor um génio enganador, em vez de apenas duvidar dos sentidos? Escrevam na folha o que a dúvida ganha com ele.","q":"Depois de escreverem: o que é que o génio acrescenta?","ops":["Torna a dúvida mais assustadora.","Estende a dúvida ao que não depende dos sentidos — as verdades matemáticas e os raciocínios simples.","Explica por que razão os sentidos nos enganam.","Prova que Deus não existe."],"resp":2},{"cod":"D4","pts":50,"t":"O cogito","esc":"Porque é que «penso, logo existo» resiste ao génio maligno, e «tenho um corpo» não? Escrevam a explicação na folha.","q":"Depois de escreverem: porque é que o cogito resiste?","ops":["Porque é uma frase famosa.","Porque o corpo é mais complicado de conhecer.","Porque Deus garante que é verdadeira.","Porque para ser enganado é preciso estar a pensar — o próprio ato de duvidar confirma quem duvida."],"resp":4}]}};
+const SAL = "cjd-manuscrito-2026";
+const ALFA = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
+const MIN_JOGO = 32;
+
+/* ====== SINCRONIZAÇÃO (opcional) ======================================
+   Com SYNC.url vazio a app funciona exatamente como antes, sem rede.
+   Para ligar o painel do professor, cola aqui o endereço da base de dados.
+   ==================================================================== */
+const SYNC = { url: "https://manuscrito-cid-default-rtdb.europe-west1.firebasedatabase.app", sessao: "dmf2026" };
+
+let _ultEnvio=0, _bat=null;
+function envia(forca, fora){
+  if(!SYNC.url || !ST || !ST.eq) return;
+  const agora=Date.now();
+  if(!forca && agora-_ultEnvio<4000) return;
+  _ultEnvio=agora;
+  const corpo={ nm:ST.nm, pts:ST.pts, cart:Object.keys(ST.feitos).length,
+    pistas:ST.pistas, saidas:ST.saidas||0, fora:!!fora,
+    ult:ST.ult||"", fim:ST.fim||null, ts:agora };
+  const u=SYNC.url.replace(/\/+$/,"")+"/"+SYNC.sessao+"/"+ST.ano+"/"+ST.eq+".json";
+  try{
+    fetch(u,{method:"PUT",keepalive:true,headers:{"Content-Type":"application/json"},
+      body:JSON.stringify(corpo)}).catch(function(){});
+  }catch(e){}
+}
+function bate(){ if(_bat) clearInterval(_bat);
+  if(SYNC.url) _bat=setInterval(function(){ envia(true, document.hidden); },15000); }
+document.addEventListener("visibilitychange",function(){
+  if(!ST || ST.fim) return;
+  if(document.hidden){ ST.saidas=(ST.saidas||0)+1; guarda(); envia(true,true); }
+  else envia(true,false);
+});
+
+/* ---------- utilitários ---------- */
+function rng(seed){let a=seed>>>0;return function(){a|=0;a=a+0x6D2B79F5|0;let t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296;};}
+function pick(arr,n,r){const c=arr.slice(),o=[];while(o.length<n&&c.length)o.push(c.splice(Math.floor(r()*c.length),1)[0]);return o;}
+function semente(ano,eq,cod){let h=2166136261>>>0;const s=ano+"|"+eq+"|"+cod+"|"+SAL;
+  for(let i=0;i<s.length;i++){h^=s.charCodeAt(i);h=Math.imul(h,16777619)>>>0;}return h;}
+function hash10(n){let h=2166136261>>>0;const s=String(n)+SAL;
+  for(let i=0;i<s.length;i++){h^=s.charCodeAt(i);h=Math.imul(h,16777619)>>>0;}return h%1024;}
+function fazCodigo(ano,eq,pts,cart,mins){
+  const p=Math.min(88,Math.round(pts/5)), c=Math.min(16,cart), mi=Math.min(63,mins), a=(ano===11?1:0);
+  const carga=(((((eq*89+p)*17+c)*64+mi)*2)+a);
+  const v=carga*1024+hash10(carga);
+  let s="",x=v; for(let i=0;i<7;i++){ s=ALFA[x%32]+s; x=Math.floor(x/32); }
+  return s;
+}
+
+/* ---------- cartões ---------- */
+const FAM={A:{n:"Argumentos",c:"var(--fa)"},B:{n:"Proposições",c:"var(--fb)"},
+           C:{n:"Enigmas",c:"var(--fc)"},D:{n:"Paradoxos",c:"var(--fd)"}};
+const PTS=[10,20,30,50];
+
+function monta(D,eq){
+  const C=[];
+  const mk=(cod,f,n,t,build)=>C.push({cod:cod,f:f,n:n,p:PTS[n-1],t:t,build:build});
+  mk("A1","A",1,"Válido ou não?",r=>{const s=pick(D.args,4,r);
+    return{sub:"Quantos destes argumentos são válidos?",lista:s.map(x=>x[0]),resp:s.filter(x=>x[1]).length,
+      dica:"Um argumento é válido pela forma. Pergunta: se as premissas fossem todas verdadeiras, a conclusão podia ainda assim ser falsa?"};});
+  mk("A2","A",2,"A premissa que falta",r=>{const s=pick(D.supr,1,r)[0];
+    return{sub:"Qual é a premissa suprimida deste argumento? Responde com o número da opção.",arg:"«"+s[0]+"»",
+      lista:s[1],resp:s[2],dica:"A premissa suprimida é a generalização sem a qual a conclusão não decorre das premissas expressas."};});
+  mk("A3","A",3,"Verdade não é validade",r=>{const s=pick(D.args,6,r);
+    return{sub:"Quantos destes seis argumentos são válidos? Cuidado: há pelo menos um com conclusão verdadeira e forma inválida.",
+      lista:s.map(x=>x[0]),resp:s.filter(x=>x[1]).length,
+      dica:"Que a conclusão seja verdadeira não torna o argumento válido. Olha só para a forma."};});
+  mk("A4","A",4,"As formas da inferência",r=>{const s=pick(D.formas,6,r);
+    return{sub:"Quantas destas formas de inferência são válidas?",lista:s.map(x=>x[0]),resp:s.filter(x=>x[1]).length,
+      dica:"Testa cada forma com uma tabela de verdade: há alguma linha em que as premissas sejam verdadeiras e a conclusão falsa?"};});
+  mk("B1","B",1,"Isto é uma proposição?",r=>{const s=pick(D.enun,6,r);
+    return{sub:"Quantos destes enunciados exprimem proposições?",lista:s.map(x=>x[0]),resp:s.filter(x=>x[1]).length,
+      dica:"Uma proposição é verdadeira ou falsa. Ser falsa não a impede de ser proposição."};});
+  mk("B2","B",2,"Forma canónica",r=>{const s=pick(D.categ,5,r);
+    return{sub:"Passa cada uma à forma canónica. Quantas são do tipo O, particular negativa?",lista:s.map(x=>x[0]),
+      resp:s.filter(x=>x[1]==="O").length,
+      dica:"«Nem todos», «há… que não» e «alguns… não são» são todas particulares negativas."};});
+  mk("B3","B",3,"Tabela de verdade",r=>{const s=pick(D.fmls,1,r)[0];
+    return{sub:"Constrói a tabela de verdade desta proposição. Quantas linhas são verdadeiras?",fml:s[0],resp:s[1],
+      dica:"Três proposições simples: 2³ = 8 linhas. Resolve primeiro os parênteses e as negações."};});
+  mk("B4","B",4,"Equivalências",r=>{const s=pick(D.pares,4,r);
+    return{sub:"Quantos destes pares são equivalentes, isto é, têm exatamente a mesma tabela de verdade?",
+      lista:s.map(x=>x[0]+"   ≟   "+x[1]),resp:s.filter(x=>x[2]).length,
+      dica:"Constrói as duas tabelas de cada par e compara linha a linha. Basta uma linha diferente para não serem equivalentes."};});
+  mk("C1","C",1,"As quatro caixas",r=>{const v=pick(D.c1,1,r)[0];const cor=["Azul","Vermelha","Amarela","Verde"];
+    return{sub:"Quatro caixas, quatro afirmações. Só uma das afirmações é verdadeira. Em que caixa está o manuscrito? Responde com o número.",
+      lista:v.frases.map((f,i)=>"Caixa "+(i+1)+" ("+cor[i]+") diz: «"+f+"»"),resp:v.sol,
+      dica:"Testa uma caixa de cada vez: supõe que o manuscrito está lá e conta quantas afirmações ficam verdadeiras."};});
+  mk("C2","C",2,"As salas da Academia",r=>{const v=pick(D.c2,1,r)[0];
+    return{sub:"Quatro salas lado a lado, de 1 a 4. Em cada uma, um filósofo, um objeto e um tema, todos diferentes. Em que sala está a lamparina?",
+      lista:v.pistas,resp:v.solO.indexOf(2)+1,
+      dica:"Desenha a grelha na folha de trabalho e começa pelas pistas que fixam uma sala."};});
+  mk("C3","C",3,"Quem diz a verdade",r=>{const v=pick(D.c3,1,r)[0];const nm=["Alceu","Briseida","Cléon","Diotima"];
+    const cor=["azul","vermelha","amarela","verde"];
+    return{sub:"Quatro suspeitos. Exatamente duas das declarações são verdadeiras. Quem tem o manuscrito? Responde com o número.",
+      lista:v.frases.map((f,i)=>nm[i]+" (suspeito "+(i+1)+"): «"+f.replace(/caixa (\w+)/g,(_,c)=>"posse de "+nm[cor.indexOf(c)]).replace("está aqui","está comigo")+"»"),
+      resp:v.sol,dica:"Supõe que é o suspeito 1 e conta quantas declarações ficam verdadeiras. Repete para cada um: só numa hipótese ficam exatamente duas."};});
+  mk("C4","C",4,"As cinco salas",r=>{const v=pick(D.c4,1,r)[0];
+    return{sub:"Cinco salas lado a lado, de 1 a 5. Em cada uma, um filósofo, um objeto e um tema. Em que sala está a lamparina?",
+      lista:v.pistas,resp:v.solO.indexOf(2)+1,
+      dica:"Grelha de cinco colunas na folha. As pistas de «imediatamente à direita» e de «ao lado» são as que fecham o problema."};});
+  D.d.forEach((d,i)=>{
+    C.push({cod:d.cod,f:"D",n:i+1,p:d.pts,t:d.t,build:()=>({
+      sub:d.esc, pergunta:d.q, lista:d.ops, resp:d.resp, escreve:true,
+      dica:"Discutam primeiro e escrevam na folha. Só depois escolham a opção."})});
+  });
+  return C;
+}
+
+/* ---------- estado ---------- */
+let ST=null;
+const app=document.getElementById("app");
+const nav=document.getElementById("nav");
+const esc=s=>String(s).replace(/[&<>]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;"}[c]));
+
+function guarda(){ try{ localStorage.setItem("mpa",JSON.stringify(ST)); }catch(e){} }
+function carrega(){ try{ const s=localStorage.getItem("mpa"); return s?JSON.parse(s):null; }catch(e){ return null; } }
+
+/* ---------- ecrãs ---------- */
+function entrada(){
+  nav.hidden=true;
+  app.innerHTML=
+   '<h1>O Manuscrito Perdido da Academia</h1>'+
+   '<p class="sub">A vossa equipa tem um conjunto de enunciados só vosso. Copiar da mesa do lado não serve de nada.</p>'+
+   '<div class="card">'+
+   '<div class="field"><label for="ano">Ano</label>'+
+   '<select id="ano"><option value="10">10.º ano</option><option value="11">11.º ano</option></select></div>'+
+   '<div class="field"><label for="eq">Número da equipa, o que está na vossa mesa</label>'+
+   '<input id="eq" inputmode="numeric" maxlength="2" placeholder="7"></div>'+
+   '<div class="field" style="margin-bottom:18px"><label for="nm">Nome da equipa</label>'+
+   '<input id="nm" maxlength="26" placeholder="Os Eleatas"></div>'+
+   '<button class="btn primary" id="go">Começar</button>'+
+   '<p class="msg" id="m"></p></div>'+
+   '<p class="sub" style="margin:14px 2px 0;font-size:14px">Carreguem em Começar só quando o professor disser. O cronómetro arranca nesse momento.</p>';
+  document.getElementById("go").onclick=()=>{
+    const eq=parseInt(document.getElementById("eq").value,10);
+    const nm=document.getElementById("nm").value.trim();
+    const ano=parseInt(document.getElementById("ano").value,10);
+    const m=document.getElementById("m");
+    if(!(eq>=1&&eq<=63)){ m.className="msg bad"; m.textContent="O número da equipa tem de estar entre 1 e 63."; return; }
+    if(!nm){ m.className="msg bad"; m.textContent="Escrevam o nome da equipa."; return; }
+    ST={ano:ano,eq:eq,nm:nm,ini:Date.now(),pts:0,feitos:{},err:{},pistas:0,saidas:0,ult:"",fim:null};
+    guarda(); jogo(); envia(true,false);
+  };
+}
+
+function dados(c){ return c.build(rng(semente(ST.ano,ST.eq,c.cod))); }
+function cartoes(){ return monta(ST.ano===11?DADOS.a11:DADOS.a10, ST.eq); }
+function restam(){ return Math.max(0, MIN_JOGO*60 - Math.floor((Date.now()-ST.ini)/1000)); }
+
+function jogo(){
+  const C=cartoes();
+  const feitos=Object.keys(ST.feitos).length;
+  const ff={}; Object.keys(ST.feitos).forEach(k=>ff[k[0]]=1);
+  nav.hidden=false;
+  document.getElementById("navt").textContent=ST.nm;
+  document.getElementById("navs").textContent="Equipa "+ST.eq+" · "+ST.ano+".º ano";
+  app.innerHTML=
+   '<div class="hud" id="hud">'+
+   '<div><span>Pontos</span><b id="pt">'+ST.pts+'</b></div>'+
+   '<div><span>Cartões</span><b>'+feitos+'<span style="font-size:13px;color:var(--fg2)">/16</span></b></div>'+
+   '<div><span>Pistas</span><b>'+ST.pistas+'</b></div>'+
+   '<div><span>Tempo</span><b id="rel">--:--</b></div></div>'+
+   '<div class="fams">'+Object.keys(FAM).map(k=>'<span class="fam'+(ff[k]?' on':'')+'">'+FAM[k].n+(ff[k]?" ✓":"")+'</span>').join("")+'</div>'+
+   '<div class="grid" id="grid"></div><div id="slot"></div>'+
+   '<div class="row" style="margin-top:20px"><button class="btn quiet" id="term">Terminar e gerar o código</button></div>';
+  const g=document.getElementById("grid");
+  C.forEach(c=>{
+    const b=document.createElement("button");
+    b.className="cb"+(ST.feitos[c.cod]?" done":"");
+    b.style.setProperty("--fam",FAM[c.f].c);
+    b.innerHTML='<span class="f">'+FAM[c.f].n+'</span><h4>'+esc(c.t)+'</h4>'+
+      '<span class="meta"><span class="dots">'+'<i></i>'.repeat(c.n)+'</span><span class="pts">'+
+      (ST.feitos[c.cod]?"✓ "+ST.feitos[c.cod]:c.p+" pts")+'</span></span>';
+    b.onclick=()=>abre(c);
+    g.appendChild(b);
+  });
+  document.getElementById("term").onclick=()=>{ if(confirmarFim()) fim(); };
+  tique(); bate();
+}
+function confirmarFim(){ const s=document.getElementById("slot");
+  if(s.dataset.conf==="1") return true;
+  s.dataset.conf="1";
+  s.innerHTML='<div class="panel"><h3>Terminar?</h3><p>Depois de gerar o código já não podem resolver mais cartões.</p>'+
+   '<div class="row"><button class="btn primary" id="sim">Sim, terminar</button><button class="btn" id="nao">Continuar</button></div></div>';
+  document.getElementById("slot").scrollIntoView({behavior:"smooth",block:"center"});
+  document.getElementById("sim").onclick=()=>fim();
+  document.getElementById("nao").onclick=()=>{ s.dataset.conf=""; s.innerHTML=""; };
+  return false;
+}
+
+let tmr=null;
+function tique(){
+  if(tmr) clearInterval(tmr);
+  const pinta=()=>{ const el=document.getElementById("rel"); if(!el) return;
+    const s=restam();
+    el.textContent=String(Math.floor(s/60)).padStart(2,"0")+":"+String(s%60).padStart(2,"0");
+    const h=document.getElementById("hud"); if(h) h.classList.toggle("urgente", s<=300);
+    const b=document.getElementById("bar");
+    if(b){ b.style.width=(100-100*s/(MIN_JOGO*60)).toFixed(2)+"%"; b.classList.toggle("urg", s<=300); }
+    if(s<=0){ clearInterval(tmr); fim(); } };
+  pinta(); tmr=setInterval(pinta,1000);
+}
+
+function abre(c){
+  const d=dados(c), feito=!!ST.feitos[c.cod], slot=document.getElementById("slot");
+  slot.dataset.conf="";
+  const bloq=ST.err[c.cod+"_ate"]||0, agora=Date.now();
+  let h='<div class="panel"><span class="k" style="color:'+FAM[c.f].c+'">'+FAM[c.f].n+' · nível '+c.n+' · '+c.p+' pontos</span>'+
+    '<h3>'+esc(c.t)+'</h3><p class="who">Enunciado da equipa '+ST.eq+'</p><p>'+esc(d.sub)+'</p>';
+  if(d.fml) h+='<span class="fml">'+esc(d.fml)+'</span>';
+  if(d.arg) h+='<p class="quote">'+esc(d.arg)+'</p>';
+  if(d.pergunta) h+='<p style="font-weight:600">'+esc(d.pergunta)+'</p>';
+  if(d.lista) h+='<ol>'+d.lista.map(x=>"<li>"+esc(x)+"</li>").join("")+'</ol>';
+  if(feito){ h+='<p class="msg ok">Resolvido. +'+ST.feitos[c.cod]+' pontos.</p>'; }
+  else if(agora<bloq){ h+='<p class="msg bad" id="blo"></p>'; }
+  else {
+    h+='<div class="ansrow"><input id="r" inputmode="numeric" maxlength="2" placeholder="?" aria-label="Resposta">'+
+       '<button class="btn primary" id="ok">Validar</button></div>'+
+       '<div style="margin-top:10px"><button class="btn" id="dica">Pedir uma pista (−5 pontos)</button></div>'+
+       '<p class="msg" id="m"></p>';
+  }
+  h+='<div style="margin-top:14px"><button class="btn quiet" id="volta">Voltar ao tabuleiro</button></div></div>';
+  slot.innerHTML=h;
+  ST.ult=c.cod+" · "+c.t; guarda(); envia(false,false);
+  document.getElementById("volta").onclick=()=>{ slot.innerHTML=""; window.scrollTo({top:0,behavior:"smooth"}); };
+  try{ slot.scrollIntoView({behavior:"smooth",block:"start"}); }catch(e){ slot.scrollIntoView(); }
+
+  if(agora<bloq){
+    const el=document.getElementById("blo");
+    if(el) el.textContent="Duas respostas erradas. Este cartão volta a abrir dentro de "+Math.ceil((bloq-agora)/1000)+" s.";
+    const t=setInterval(()=>{ const s=Math.ceil((bloq-Date.now())/1000);
+      if(s<=0){ clearInterval(t); abre(c); }
+      else { const e2=document.getElementById("blo");
+        if(e2) e2.textContent="Duas respostas erradas. Este cartão volta a abrir dentro de "+s+" s — aproveitem para refazer as contas."; } },250);
+    return;
+  }
+  if(feito) return;
+
+  const m=document.getElementById("m");
+  document.getElementById("dica").onclick=function(){
+    ST.pistas++; ST.pts=Math.max(0,ST.pts-5); this.disabled=true; guarda();
+    const p=document.getElementById("pt"); if(p) p.textContent=ST.pts;
+    m.className="msg warn"; m.textContent="Pista: "+d.dica+"  (−5 pontos)"; envia(true,false);
+  };
+  document.getElementById("ok").onclick=()=>{
+    const v=parseInt((document.getElementById("r").value||"").trim(),10);
+    if(v===d.resp){
+      ST.feitos[c.cod]=c.p; ST.pts+=c.p; guarda();
+      m.className="msg ok"; m.textContent="Certo. +"+c.p+" pontos."; envia(true,false);
+      setTimeout(()=>{ jogo(); window.scrollTo({top:0,behavior:"smooth"}); },700);
+    } else {
+      const k=c.cod; ST.err[k]=(ST.err[k]||0)+1;
+      if(ST.err[k]%2===0){
+        ST.err[k+"_ate"]=Date.now()+45000;
+        if(ST.err[k]>=4){ ST.pts=Math.max(0,ST.pts-5); }
+        guarda(); abre(c);
+      } else {
+        guarda(); m.className="msg bad"; m.textContent="Não é esse. Mais uma errada e o cartão fecha 45 segundos.";
+      }
+    }
+  };
+}
+
+function fim(){
+  if(tmr) clearInterval(tmr);
+  const feitos=Object.keys(ST.feitos).length;
+  const mins=Math.min(63,Math.round((Date.now()-ST.ini)/60000));
+  const cod=fazCodigo(ST.ano,ST.eq,ST.pts,feitos,mins);
+  ST.fim=cod; guarda(); envia(true,false); if(_bat) clearInterval(_bat); mostraFim(cod,feitos,mins);
+}
+function mostraFim(cod,feitos,mins){
+  nav.hidden=false;
+  document.getElementById("navt").textContent=ST.nm;
+  document.getElementById("navs").textContent="Equipa "+ST.eq+" · terminado";
+  const b=document.getElementById("bar"); if(b){ b.style.width="100%"; }
+  app.innerHTML='<h1>Acabou</h1>'+
+   '<p class="sub">Mostrem este código ao professor. É nele que vão os vossos pontos.</p>'+
+   '<div class="fim"><span class="k">Equipa '+esc(ST.eq)+' · '+esc(ST.nm)+'</span>'+
+   '<div class="codigo">'+cod+'</div></div>'+
+   '<div class="hud" style="margin-top:14px">'+
+   '<div><span>Pontos</span><b>'+ST.pts+'</b></div>'+
+   '<div><span>Cartões</span><b>'+feitos+'<span style="font-size:13px;color:var(--fg2)">/16</span></b></div>'+
+   '<div><span>Pistas</span><b>'+ST.pistas+'</b></div>'+
+   '<div><span>Minutos</span><b>'+mins+'</b></div></div>'+
+   '<p class="sub" style="margin-top:16px">Não fechem esta página até o código ser registado.</p>';
+}
+
+/* ---------- arranque ---------- */
+function arranca(){
+  const s=carrega();
+  if(s&&s.ini&&!s.fim&&(Date.now()-s.ini)<MIN_JOGO*60000+600000){ ST=s; jogo(); return; }
+  if(s&&s.fim){ ST=s;
+    mostraFim(s.fim,Object.keys(s.feitos||{}).length,Math.min(63,Math.round(((s.ini?Date.now()-s.ini:0))/60000)));
+    const d=document.createElement("div"); d.className="row"; d.style.marginTop="18px";
+    d.innerHTML='<button class="btn quiet" id="novo">Começar de novo</button>';
+    app.appendChild(d);
+    document.getElementById("novo").onclick=()=>{ try{localStorage.removeItem("mpa");}catch(e){} entrada(); };
+    return; }
+  entrada();
+}
+arranca();
+</script>
