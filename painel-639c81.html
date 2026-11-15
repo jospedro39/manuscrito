@@ -241,8 +241,21 @@ function painel(){
     '<p class="sub" style="margin:14px 0 0">Atualiza sozinho de 4 em 4 segundos. Cada equipa aparece assim que carregar em Começar.</p>'+
     '<div class="est"><span class="ponto" id="luz"></span><span id="estado">a ligar…</span></div>'+
     '<div class="tiles" id="tiles"></div>'+
-    '<div class="row" style="margin-top:16px"><button class="btn" id="proj2">Projetar ranking</button></div>';
+    '<div class="row" style="margin-top:16px"><button class="btn" id="proj2">Projetar ranking</button>'+
+    '<button class="btn" id="limpa">Limpar tudo</button></div><p class="msg" id="ml"></p>';
   document.getElementById("proj2").onclick=()=>projeta(deVivo());
+  const bl=document.getElementById("limpa"), ml=document.getElementById("ml");
+  bl.onclick=function(){
+    if(bl.dataset.c!=="1"){ bl.dataset.c="1"; bl.textContent="Apagar mesmo tudo?";
+      ml.className="msg warn"; ml.textContent="Apaga as pontuações de todas as equipas, dos dois anos. Não se recupera. Carrega outra vez para confirmar, ou espera cinco segundos.";
+      setTimeout(function(){ if(bl.dataset.c==="1"){ bl.dataset.c=""; bl.textContent="Limpar tudo"; ml.textContent=""; } },5000);
+      return; }
+    bl.dataset.c=""; bl.textContent="Limpar tudo";
+    fetch(SYNC.url.replace(/\/+$/,"")+"/"+SYNC.sessao+".json",{method:"DELETE"})
+      .then(function(r){ if(!r.ok) throw 0; vivo={}; pinta();
+        ml.className="msg ok"; ml.textContent="Apagado. O painel está vazio."; })
+      .catch(function(){ ml.className="msg bad"; ml.textContent="Não consegui apagar. Tenta outra vez."; });
+  };
   if(sond) clearInterval(sond);
   sonda(); sond=setInterval(sonda,4000);
 }
